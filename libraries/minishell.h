@@ -5,14 +5,6 @@
 #include "enviroment.h"
 
 
-typedef struct s_main_struct
-{
-	t_enviroment **env_struct;
-	char **env;
-
-} t_main_struct;
-
-
 
 
 #endif

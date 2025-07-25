@@ -1,6 +1,6 @@
 NAME = MINISHELL
 
-SRC = main.c parse/lexer.c
+SRC = main.c parse/lexer.c parse/parser_utils.c parse/parser.c parse/tokenize.c env/env.c
 
 CC = cc 
 
