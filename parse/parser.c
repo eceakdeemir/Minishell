@@ -36,22 +36,25 @@ void tokenize_expender(t_lexer **head, t_enviroment *env)
     while (tmp)
     {
         i = 0;
-        while (tmp->word[i])
+        if (tmp->word[i] != '\'')
         {
-            if (tmp->word[i] == '$' && flag == 0)
+            while (tmp->word[i])
             {
-                if (tmp->word[i] == '\'')
-                    flag = 1;
-                start = i;
-                while ((tmp->word[i] != ' ' && tmp->word[i] != '\"') && tmp->word[i])
-                    i++;
-                end = i;
-                is_this_expender = ft_substr(tmp->word, start + 1, end - start -1);
-                control_value = get_env_value(is_this_expender, env);
-                free(is_this_expender);
-                combine_expender(tmp, start, end, control_value);
+                if (tmp->word[i] == '$' && flag == 0)
+                {
+                    if (tmp->word[i] == '\'')
+                        flag = 1;
+                    start = i;
+                    while ((tmp->word[i] != ' ' && tmp->word[i] != '\"') && tmp->word[i])
+                        i++;
+                    end = i;
+                    is_this_expender = ft_substr(tmp->word, start + 1, end - start -1);
+                    control_value = get_env_value(is_this_expender, env);
+                    free(is_this_expender);
+                    combine_expender(tmp, start, end, control_value);
+                }
+                i++;
             }
-            i++;
         }
         tmp = tmp->next;
     }
