@@ -12,7 +12,7 @@ void combine_expender(t_lexer *tmp, int start, int end, char *control_value)
     if (control_value)
     {
         tmp->word = ft_strjoin(first_part, control_value);
-        tmp->word = ft_strjoin(tmp->word, second_part);
+        tmp->word = ft_strjoin(tmp->word, second_part);//memory leak var.
     }
     else
         tmp->word = ft_strjoin(first_part, second_part);
@@ -42,19 +42,27 @@ void tokenize_expender(t_lexer **head, t_enviroment *env)
     while (tmp)
     {
         i = 0;
-        if (tmp->word[i] != '\'')
+        while (tmp->word[i])
         {
-            while (tmp->word[i])
+            if (tmp->word[i] == '\'') // tek tırnak varsa direk geçicek atlanıcak işlem yok. 
             {
-                if (tmp->word[i] == '$')
-                {
-                    start = i;
-                    while ((tmp->word[i] != ' ' && tmp->word[i] != '\"') && tmp->word[i])
-                        i++;
-                    control_expender(start, i, env, tmp);
-                }
-                i++;
+               i++;
+               while (tmp->word[i] && tmp->word[i] != '\'')
+                    i++;
+               if (tmp->word[i] == '\'')
+                    i++;
             }
+            else if (tmp->word[i] == '$') // bunun dışında her kelimede $ varsa expander etcek 
+            {
+                start = i;
+                i++;
+                while (tmp->word[i] && (ft_isalnum(tmp->word[i]) || tmp->word[i] == '_')) // değişkenin sonuna kadar gidilir. 
+                    i++;
+                control_expender(start, i, env, tmp);
+                i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
+            }
+            else
+                i++;
         }
         tmp = tmp->next;
     }

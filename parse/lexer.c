@@ -38,17 +38,21 @@ void lexer_print(t_lexer *list)
 
 void add_word_to_list(int start, int *i, t_lexer **head, char *line)
 {
-    if (line[*i] == '\"' || line[*i] == '\'')
+    char quote;
+    while (line[*i] && !ft_isspace(line[*i]) && !ft_strchr("|<>", line[*i]))
     {
-        char quote = line[(*i)];
-        (*i)++;
-        while (line[(*i)] && line[(*i)] != quote)
+        if (line[*i] == '\'' || line[*i] == '\"')
+        {
+            quote = line[*i];
             (*i)++;
-        if (line[(*i)] == quote)
+            while (line[*i] && line[*i] != quote)
+                (*i)++;
+            if (line[*i] == quote)
+                (*i)++;
+        }
+        else
             (*i)++;
     }
-    while ((line[*i] && !ft_isspace(line[*i])) && !ft_strchr("|<>\"\'", line[*i]))
-        (*i)++;
     add_new_node_to_list(create_new_lexer_node(ft_strndup(&line[start], (*i) - start), TOKEN_WORD), head);
 }
 

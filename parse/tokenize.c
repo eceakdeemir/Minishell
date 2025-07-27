@@ -24,12 +24,12 @@ void tokenize_input_output_and_pipe(t_lexer **head, char *line, int *i)
     }
     else if (line[(*i)] == '>')
     {
-        add_new_node_to_list(create_new_lexer_node(">", TOKEN_INPUT), head);
+        add_new_node_to_list(create_new_lexer_node(">", TOKEN_OUTPUT), head);
         (*i) += 1;
     }
     else if (line[(*i)] == '<')
     {
-        add_new_node_to_list(create_new_lexer_node("<", TOKEN_OUTPUT), head);
+        add_new_node_to_list(create_new_lexer_node("<", TOKEN_INPUT), head);
         (*i) += 1;
     }
 }
