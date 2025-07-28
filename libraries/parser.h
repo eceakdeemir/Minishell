@@ -50,20 +50,39 @@ typedef struct s_main_struct
 } t_main_struct;
 
 
+//lexer.c
 t_lexer *create_new_lexer_node(char *str, t_token_enum token);
 void add_new_node_to_list(t_lexer *node, t_lexer **head);
-void tokenize_heredoc_and_append(t_lexer **head, char *line, int *i);
-void tokenize_input_output_and_pipe(t_lexer **head, char *line, int *i);
 void add_word_to_list(int start, int *i, t_lexer **head, char *line);
 t_lexer **lexer(char *line);
+
+//tokenize.c
+void tokenize_heredoc_and_append(t_lexer **head, char *line, int *i);
+void tokenize_input_output_and_pipe(t_lexer **head, char *line, int *i);
+
+
+
+//parser.c
 void tokenize_expender(t_lexer **head, t_enviroment *env);
 t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
+void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp);
+void combine_expender(t_lexer *tmp, int start, int end, char *control_value);
 
 
+
+//parser_utils.c
 int ft_isspace(char line);
 char *ft_strndup(const char *src, int len);
-void lexer_print(t_lexer *head);
 int	ft_strcmp(const char *s1, const char *s2);
+void lexer_print(t_lexer *head);
+
+//remove_quıtes.c
+void remove_quotes_all(t_lexer **head);
+char *remove_quotes(char *word);
+
+
+
+
 
 
 

@@ -27,15 +27,6 @@ void add_new_node_to_list(t_lexer *node, t_lexer **head)
     tmp->next = node;
 }
 
-void lexer_print(t_lexer *list)
-{
-    while (list)
-    {
-        printf("%d %s \n", list->token_enum, list->word);
-        list = list->next;
-    }
-}
-
 void add_word_to_list(int start, int *i, t_lexer **head, char *line)
 {
     char quote;

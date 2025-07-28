@@ -43,3 +43,12 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (0);
 }
+
+void lexer_print(t_lexer *list)
+{
+    while (list)
+    {
+        printf("%d %s \n", list->token_enum, list->word);
+        list = list->next;
+    }
+}
