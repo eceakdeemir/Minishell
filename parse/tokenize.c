@@ -1,5 +1,4 @@
-#include "../libraries/parser.h"
-
+#include "../libraries/minishell.h"
 
 void tokenize_heredoc_and_append(t_lexer **head, char *line, int *i)
 {

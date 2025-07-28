@@ -61,13 +61,11 @@ void tokenize_heredoc_and_append(t_lexer **head, char *line, int *i);
 void tokenize_input_output_and_pipe(t_lexer **head, char *line, int *i);
 
 
-
 //parser.c
 void tokenize_expender(t_lexer **head, t_enviroment *env);
 t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
 void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp);
 void combine_expender(t_lexer *tmp, int start, int end, char *control_value);
-
 
 
 //parser_utils.c
@@ -79,9 +77,6 @@ void lexer_print(t_lexer *head);
 //remove_quıtes.c
 void remove_quotes_all(t_lexer **head);
 char *remove_quotes(char *word);
-
-
-
 
 
 

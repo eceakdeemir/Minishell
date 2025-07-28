@@ -1,4 +1,4 @@
-#include "../libraries/parser.h"
+#include "../libraries/minishell.h"
 
 t_lexer *create_new_lexer_node(char *str, t_token_enum token)
 {

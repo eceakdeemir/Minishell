@@ -1,9 +1,6 @@
 #include "../libraries/minishell.h"
 
-
-
-
-char *remove_quotes(char *word)
+char *remove_quotes(char *word) // 25'den fazla satır uzunluğı  
 {
 	char *result;
 	int i;
@@ -37,8 +34,6 @@ char *remove_quotes(char *word)
 	return(result);
 }
 
-
-
 void remove_quotes_all(t_lexer **head)
 {
 	t_lexer *temp;
@@ -56,9 +51,3 @@ void remove_quotes_all(t_lexer **head)
 		temp = temp->next;
 	}
 }
-
-
-
-
-
-

@@ -1,8 +1,5 @@
-
-
 #ifndef ENV_H
 #define ENV_H
-
 
 
 typedef struct s_enviroment

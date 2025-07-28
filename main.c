@@ -1,7 +1,4 @@
-#include "libraries/parser.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "libraries/enviroment.h"
+#include "libraries/minishell.h"
 
 int main(int ag, char **av, char **envp)
 {

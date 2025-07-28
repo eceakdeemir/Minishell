@@ -1,8 +1,4 @@
-
-
-#include "../libraries/enviroment.h"
 #include "../libraries/minishell.h"
-
 
 t_enviroment *create_new_node_for_env(char *key, char *value) // enviroment için yeni node açar
 {
