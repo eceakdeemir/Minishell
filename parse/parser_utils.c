@@ -44,11 +44,29 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-void lexer_print(t_lexer *list)
+int count_args(t_lexer *lexer)
 {
-    while (list)
-    {
-        printf("%d %s \n", list->token_enum, list->word);
-        list = list->next;
-    }
+	int count;
+	t_lexer *temp;
+
+	temp = lexer;
+	if (!temp)
+		return (0);
+	count = 0;
+	while (temp && temp->token_enum != TOKEN_PIPE)
+	{
+		// printf("seg yedim\n");
+		if (temp->token_enum == TOKEN_WORD)
+		{
+			count++;
+ 			temp = temp->next; 
+		}
+		else
+		{
+            temp = temp->next; // hedefe geç
+            if (temp)
+                temp = temp->next; // hedefi de geç
+		}
+	}
+	return(count);
 }

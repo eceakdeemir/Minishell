@@ -19,6 +19,14 @@ typedef enum s_token_enum
     TOKEN_HEREDOC,  //5
 } t_token_enum;
 
+typedef struct s_redirector
+{
+    enum s_token_enum token_enum;
+    char *file;
+    struct s_redirector *next;
+} t_redirector;
+
+
 typedef struct s_lexer
 {
     char *word;
@@ -32,12 +40,8 @@ typedef struct s_parser
 {
     t_lexer *lexer;
     char **args;
-    char *infile;
-    char *outfile;
-    char *append;
-    char *heredoc;
+    t_redirector *redirector;
     struct s_parser *next;
-    struct s_parser *prev;
 } t_parser;
 
 //şimdilik burda kalsın yeri değişcek
@@ -61,9 +65,8 @@ void tokenize_heredoc_and_append(t_lexer **head, char *line, int *i);
 void tokenize_input_output_and_pipe(t_lexer **head, char *line, int *i);
 
 
-//parser.c
+//expander.c
 void tokenize_expender(t_lexer **head, t_enviroment *env);
-t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
 void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp);
 void combine_expender(t_lexer *tmp, int start, int end, char *control_value);
 
@@ -72,13 +75,27 @@ void combine_expender(t_lexer *tmp, int start, int end, char *control_value);
 int ft_isspace(char line);
 char *ft_strndup(const char *src, int len);
 int	ft_strcmp(const char *s1, const char *s2);
-void lexer_print(t_lexer *head);
+int count_args(t_lexer *lexer);
 
 //remove_quıtes.c
 void remove_quotes_all(t_lexer **head);
 char *remove_quotes(char *word);
 
 
+//parser.c
+void add_redirector(t_parser *cmd, t_token_enum type, char *file);
+t_parser *create_new_parser_node(t_lexer **lexer);
+int	fill_args_to_parser(t_parser *cmd, t_lexer **lexer);
+t_parser *main_parser_func(t_lexer *lexer);
+t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
 
+
+//debug.c
+void debug_print_parser(t_parser *head);
+void lexer_print(t_lexer *head);
+void print_redirects(t_redirector *redir);
+
+//error.c
+int    syntax_error(t_lexer **lexer);
 
 #endif
