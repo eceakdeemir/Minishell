@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:20:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2024/10/16 15:23:38 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:52:26 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

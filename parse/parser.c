@@ -21,7 +21,7 @@ void	add_redirector(t_parser *cmd, t_token_enum type, char *file)
 	}
 }
 
-t_parser	*create_new_parser_node(t_lexer **lexer)// buraya geldikten sonra pipe kadar komut node'u açar.
+t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe kadar komut node'u açar.
 {
 	t_parser *cmd;
 	int count;
@@ -32,16 +32,11 @@ t_parser	*create_new_parser_node(t_lexer **lexer)// buraya geldikten sonra pipe 
 	if (!cmd->args)
 		return (NULL);
 	cmd->redirector = NULL;
-	if (fill_args_to_parser(cmd, lexer) == 1)// en son bu fonksiyona gider. int yaptım çünkü hata döndüremiyordum seg yiyordum.
-	{
-		free(cmd->args);
-		free(cmd);
-		return(NULL);
-	}
+	fill_args_to_parser(cmd, lexer); // en son bu fonksiyona gider. int yaptım çünkü hata döndüremiyordum seg yiyordum.
 	return (cmd);
 }
 
-int	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komut olarak alınır eğer redirector ise yeni bir redirector adında node açar.
+void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komut olarak alınır eğer redirector ise yeni bir redirector adında node açar.
 {
 	int i;
 
@@ -55,24 +50,15 @@ int	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komut
 		}
 		else
 		{
-			if (!(*lexer)->next || (*lexer)->next->token_enum != TOKEN_WORD)// redirectordan sonra boş veya beklenemyen bir karakterse 
-			{
-				syntax_error(lexer);
-				cmd->args[i] = NULL;
-				while (*lexer)
-					*lexer = (*lexer)->next;
-				return (1);
-			}
-			add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word);// burda node yolların ve yeni bir struct yapısında tutulur.
+			add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word); // burda node yolların ve yeni bir struct yapısında tutulur.
 			*lexer = (*lexer)->next;
 			*lexer = (*lexer)->next;
 		}
 	}
 	cmd->args[i] = NULL;
-	return (0);
 }
 
-t_parser	*main_parser_func(t_lexer *lexer)// lexerdan gelen kelimeleri pipe göre komutlara çeviriyorum.
+t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe göre komutlara çeviriyorum.
 {
 	t_parser *head;
 	t_parser *current;
@@ -82,9 +68,9 @@ t_parser	*main_parser_func(t_lexer *lexer)// lexerdan gelen kelimeleri pipe gör
 	while (lexer)
 	{
 		t_parser *cmd;
-		cmd = create_new_parser_node(&lexer);// yeni parser node oluştura gider
+		cmd = create_new_parser_node(&lexer); // yeni parser node oluştura gider
 		if (!cmd)
-			return(NULL);
+			return (NULL);
 		if (!head)
 			head = cmd;
 		else
@@ -98,11 +84,13 @@ t_parser	*main_parser_func(t_lexer *lexer)// lexerdan gelen kelimeleri pipe gör
 
 t_parser	**parser_funct(t_lexer **head, t_enviroment **env_struct)
 {
+	if (check_pipe_error(*head) || check_redirector_error(head))
+		return (NULL);
 	tokenize_expender(head, *env_struct);
 	remove_quotes_all(head);
 	t_parser *parser = main_parser_func(*head);
 	if (!parser)
-    	return (NULL);
+		return (NULL);
 	debug_print_parser(parser);
 	return (NULL);
 }

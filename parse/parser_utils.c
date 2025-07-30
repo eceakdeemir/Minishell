@@ -1,27 +1,29 @@
 #include "../libraries/minishell.h"
 
-int ft_isspace(char line)
+int	ft_isspace(char line)
 {
-    if (line == ' ' || line == '\t' || line == '\n' || line == '\v' || line == '\r' || line == '\f')
-        return (1);
-    return (0);
+	if (line == ' ' || line == '\t' || line == '\n' || line == '\v'
+		|| line == '\r' || line == '\f')
+		return (1);
+	return (0);
 }
 
-char *ft_strndup(const char *src, int len)
+char	*ft_strndup(const char *src, int len)
 {
-    char *dest = malloc(len + 1);
-    int i;
+	char	*dest;
+	int		i;
 
-    if (!dest)
-        return NULL;
-    i = 0;
-    while (i < len)
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[len] = '\0';
-    return dest;
+	dest = malloc(len + 1);
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[len] = '\0';
+	return (dest);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -44,10 +46,10 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-int count_args(t_lexer *lexer)
+int	count_args(t_lexer *lexer)
 {
-	int count;
-	t_lexer *temp;
+	int		count;
+	t_lexer	*temp;
 
 	temp = lexer;
 	if (!temp)
@@ -55,18 +57,17 @@ int count_args(t_lexer *lexer)
 	count = 0;
 	while (temp && temp->token_enum != TOKEN_PIPE)
 	{
-		// printf("seg yedim\n");
 		if (temp->token_enum == TOKEN_WORD)
 		{
 			count++;
- 			temp = temp->next; 
+			temp = temp->next;
 		}
 		else
 		{
-            temp = temp->next; // hedefe geç
-            if (temp)
-                temp = temp->next; // hedefi de geç
+			temp = temp->next;
+			if (temp)
+				temp = temp->next;
 		}
 	}
-	return(count);
+	return (count);
 }

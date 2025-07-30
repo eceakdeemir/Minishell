@@ -85,7 +85,7 @@ char *remove_quotes(char *word);
 //parser.c
 void add_redirector(t_parser *cmd, t_token_enum type, char *file);
 t_parser *create_new_parser_node(t_lexer **lexer);
-int	fill_args_to_parser(t_parser *cmd, t_lexer **lexer);
+void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer);
 t_parser *main_parser_func(t_lexer *lexer);
 t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
 
@@ -96,6 +96,7 @@ void lexer_print(t_lexer *head);
 void print_redirects(t_redirector *redir);
 
 //error.c
-int    syntax_error(t_lexer **lexer);
+int	check_redirector_error(t_lexer **lexer);
+int check_pipe_error(t_lexer *lexer);
 
 #endif
