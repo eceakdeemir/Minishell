@@ -22,12 +22,16 @@ void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp)
 {
     char *is_this_expender;
     char *control_value;
-
-    is_this_expender = ft_substr(tmp->word, start + 1, end - start - 1);
-    control_value = get_env_value(is_this_expender, env);
-    free(is_this_expender);
-    combine_expender(tmp, start, end, control_value);
-    free(control_value);
+    if (tmp->word[start] == '$' && end - 1 == start)
+        combine_expender(tmp, start, end - 1, NULL);
+    else
+    {
+        is_this_expender = ft_substr(tmp->word, start + 1, end - start - 1);
+        control_value = get_env_value(is_this_expender, env);
+        free(is_this_expender);
+        combine_expender(tmp, start, end, control_value);
+        free(control_value);
+    }
 }
 
 void tokenize_expender(t_lexer **head, t_enviroment *env) //25'den fazla satır uzunluğı  
@@ -52,12 +56,16 @@ void tokenize_expender(t_lexer **head, t_enviroment *env) //25'den fazla satır 
             }
             else if (tmp->word[i] == '$') // bunun dışında her kelimede $ varsa expander etcek 
             {
+                if (tmp->word[i + 1] == 0)
+                    return;
+                
                 start = i;
                 i++;
                 while (tmp->word[i] && (ft_isalnum(tmp->word[i]) || tmp->word[i] == '_')) // değişkenin sonuna kadar gidilir. 
                     i++;
                 control_expender(start, i, env, tmp);
-                i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
+                if (i - 1 != start)
+                    i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
             }
             else
                 i++;
