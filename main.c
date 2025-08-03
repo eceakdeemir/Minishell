@@ -14,5 +14,6 @@ int main(int ag, char **av, char **envp)
         line = readline("minishell ");
         lexer_head = lexer(line);
         parser_head = parser_funct(lexer_head, main_struct->env_struct);
+        
     }
 }

@@ -91,6 +91,6 @@ t_parser	**parser_funct(t_lexer **head, t_enviroment **env_struct)
 	t_parser *parser = main_parser_func(*head);
 	if (!parser)
 		return (NULL);
-	debug_print_parser(parser);
+	// debug_print_parser(parser);
 	return (NULL);
 }

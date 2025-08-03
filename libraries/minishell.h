@@ -3,9 +3,14 @@
 
 #include "parser.h"
 #include "enviroment.h"
+#include "execute.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
 
+
+
+//free/free.c
+void free_argv(char **argv);
 
 #endif
