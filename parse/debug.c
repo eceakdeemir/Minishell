@@ -44,3 +44,23 @@ void lexer_print(t_lexer *list)
         list = list->next;
     }
 }
+
+
+void    print_env_list(t_enviroment **env_list)
+{
+    t_enviroment *current;
+
+    if (!env_list || !*env_list)
+    {
+        printf("env_list boş!\n");
+        return;
+    }
+    current = *env_list;
+    while (current)
+    {
+        printf("KEY: %s | VALUE: %s\n",
+            current->key ? current->key : "(null)",
+            current->value ? current->value : "(null)");
+        current = current->next;
+    }
+}

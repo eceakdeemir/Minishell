@@ -35,12 +35,26 @@ typedef struct s_lexer
 } t_lexer;
 
 
+typedef enum s_built_in_type
+{
+    ECHO,   // 0
+	CD,     // 1
+	PWD,    // 2
+	EXPORT, // 3
+	UNSET,  // 4
+	ENV,    // 5
+	EXIT,   // 6
+} t_built_in_type;
+
+
+
 //şimdilik burda kalsın yeri değişcek
 typedef struct s_parser
 {
     t_lexer *lexer;
     char **args;
     t_redirector *redirector;
+    t_built_in_type built_type;
     struct s_parser *next;
 } t_parser;
 
@@ -87,13 +101,14 @@ void add_redirector(t_parser *cmd, t_token_enum type, char *file);
 t_parser *create_new_parser_node(t_lexer **lexer);
 void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer);
 t_parser *main_parser_func(t_lexer *lexer);
-t_parser **parser_funct(t_lexer **head, t_enviroment **env_struct);
+t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct);
 
 
 //debug.c
 void debug_print_parser(t_parser *head);
 void lexer_print(t_lexer *head);
 void print_redirects(t_redirector *redir);
+void    print_env_list(t_enviroment **env_list);
 
 //error.c
 int	check_redirector_error(t_lexer **lexer);

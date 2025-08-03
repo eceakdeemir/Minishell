@@ -1,7 +1,11 @@
 {
     "files.associations": {
         "parser.h": "c",
-        "enviroment.h": "c"
+        "enviroment.h": "c",
+        "minishell.h": "c",
+        "readline.h": "c",
+        "execute.h": "c",
+        "history.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

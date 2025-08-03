@@ -1,7 +1,7 @@
 #include "../libraries/minishell.h"
+#include "../libraries/execute.h"
 
-
-static char *check_is_path(char **argv, char *cmd)
+char *check_is_path(char **argv, char *cmd)
 {
     int i;
     char *path_final;
@@ -24,6 +24,7 @@ static char *check_is_path(char **argv, char *cmd)
     return(NULL);
 }
 
+
 char *find_path(char *cmd, char **env)
 {
     char **argv;
@@ -36,10 +37,10 @@ char *find_path(char *cmd, char **env)
         else
             return(NULL);        
     }
+  
     while(*env && ft_strncmp(*env, "PATH", 4))
         env++;
     argv = ft_split(*env + 5, ':');
     result = check_is_path(argv, cmd);
-    free_argv(argv);
-    return(NULL);
+    return(result);
 }

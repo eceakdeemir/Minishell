@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 15:34:30 by ecakdemi          #+#    #+#             */
-/*   Updated: 2024/10/17 16:27:43 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/03 18:17:48 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

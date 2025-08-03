@@ -82,7 +82,7 @@ t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe gö
 	return (head);
 }
 
-t_parser	**parser_funct(t_lexer **head, t_enviroment **env_struct)
+t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct)
 {
 	if (check_pipe_error(*head) || check_redirector_error(head))
 		return (NULL);
@@ -91,6 +91,5 @@ t_parser	**parser_funct(t_lexer **head, t_enviroment **env_struct)
 	t_parser *parser = main_parser_func(*head);
 	if (!parser)
 		return (NULL);
-	// debug_print_parser(parser);
-	return (NULL);
+	return (parser);
 }
