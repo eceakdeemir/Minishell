@@ -1,6 +1,5 @@
 #include "../libraries/minishell.h"
 
-
 int	check_redirector_error(t_lexer **lexer)
 {
 	t_lexer	*temp;
@@ -34,8 +33,8 @@ int	check_redirector_error(t_lexer **lexer)
 
 int	check_pipe_error(t_lexer *lexer)
 {
-	t_lexer *temp;
-	int exit_code;
+	t_lexer	*temp;
+	int		exit_code;
 
 	temp = lexer;
 	exit_code = 0;

@@ -21,7 +21,7 @@ void	add_redirector(t_parser *cmd, t_token_enum type, char *file)
 	}
 }
 
-t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe kadar komut node'u açar.
+t_parser	*create_new_parser_node(t_lexer **lexer)// buraya geldikten sonra pipe kadar komut node'u açar.
 {
 	t_parser *cmd;
 	int count;
@@ -32,7 +32,7 @@ t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe
 	if (!cmd->args)
 		return (NULL);
 	cmd->redirector = NULL;
-	fill_args_to_parser(cmd, lexer); // en son bu fonksiyona gider. int yaptım çünkü hata döndüremiyordum seg yiyordum.
+	fill_args_to_parser(cmd, lexer);// en son bu fonksiyona gider. int yaptım çünkü hata döndüremiyordum seg yiyordum.
 	return (cmd);
 }
 
@@ -50,7 +50,8 @@ void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komu
 		}
 		else
 		{
-			add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word); // burda node yolların ve yeni bir struct yapısında tutulur.
+			add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word);
+				// burda node yolların ve yeni bir struct yapısında tutulur.
 			*lexer = (*lexer)->next;
 			*lexer = (*lexer)->next;
 		}
@@ -58,7 +59,7 @@ void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komu
 	cmd->args[i] = NULL;
 }
 
-t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe göre komutlara çeviriyorum.
+t_parser	*main_parser_func(t_lexer *lexer)// lexerdan gelen kelimeleri pipe göre komutlara çeviriyorum.
 {
 	t_parser *head;
 	t_parser *current;
