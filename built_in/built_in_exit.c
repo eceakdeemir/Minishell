@@ -1,7 +1,8 @@
 
 #include "../libraries/minishell.h"
 
-
+//cd - var mı bak?
+//cd ~ unutma
 static int check_is_numeric(const char *str)
 {
     int i;

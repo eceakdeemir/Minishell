@@ -35,18 +35,18 @@ void this_is_not_built_in(char **cmd, t_main_struct *main_struct, t_parser *pars
 
 void execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 {
-  
+
     int cmd_count;
     pid_t pid;
-   
+
     cmd_count = count_cmd(parser);
     if (cmd_count == 1)
     {
-        // if (parser->built_type >= 0 && parser->built_type <= 6 )// ⬅️ cd, export, unset, exit gibi komutlar shell durumunu değiştirdiği için ana processte çalışmalı bu yüzden burada yaptık
-		// {
-        //     // run_built_in(parser, main_struct); // fork açmadan çalıştır.
-        //     return ;
-        // }
+        if (parser->built_type >= 0 && parser->built_type <= 6 )// ⬅️ cd, export, unset, exit gibi komutlar shell durumunu değiştirdiği için ana processte çalışmalı bu yüzden burada yaptık
+		{
+            run_built_in(parser, main_struct); // fork açmadan çalıştır.
+            return ;
+        }
         pid = fork();
         if (pid == 0)
 			this_is_not_built_in(cmd, main_struct, parser);

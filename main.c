@@ -18,6 +18,7 @@ int main(int ag, char **av, char **envp)
         lexer_head = lexer(line);
         parser_head = parser_funct(lexer_head, main_struct->env_struct);
 	    //debug_print_parser(parser_head);
+        add_built_in_token(&parser_head);
         execute(parser_head->args, main_struct, parser_head);
     }
 }
