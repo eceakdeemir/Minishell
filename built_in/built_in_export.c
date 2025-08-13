@@ -1,25 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_in_export.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 15:31:06 by ecakdemi          #+#    #+#             */
+/*   Updated: 2025/08/13 17:45:05 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libraries/built_in.h"
 #include "../libraries/enviroment.h"
 
-// 0 başarılı - 1 hata
-void	print_export_error(char *str)
+//0 başarılı - 1 hata
+void print_export_error(char *str)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-int	is_valid_env_name(char *str)
+int	is_valid_env_name(char *s)
 {
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+	int	i;
+
+	if (!s || s[0] == '\0')
 	{
-		print_export_error(str);
+		print_export_error(s);
 		return (0);
+	}
+	if (!ft_isalpha(s[0]) && s[0] != '_')
+	{
+		print_export_error(s);
+		return (0);
+	}
+	i = 1;
+	while (s[i] && s[i] != '=')
+	{
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+		{
+			print_export_error(s);
+			return (0);
+		}
+		i++;
 	}
 	return (1);
 }
 
-int	print_export(t_enviroment *env) // formatlı yazdırmak için
+int print_export(t_enviroment *env) //formatlı yazdırmak için
 {
 	while (env)
 	{
@@ -37,11 +66,11 @@ int	print_export(t_enviroment *env) // formatlı yazdırmak için
 	return (0);
 }
 
-void	add_or_update_env(char *str, t_enviroment **env)
+void add_or_update_env(char *str, t_enviroment **env)
 {
-	char	*equal_sign;
-	char	*key;
-	char	*value;
+	char *equal_sign;
+	char *key;
+	char *value;
 
 	equal_sign = ft_strchr(str, '=');
 	if (equal_sign)
@@ -49,8 +78,6 @@ void	add_or_update_env(char *str, t_enviroment **env)
 		key = extract_key(str);
 		value = extract_value(str);
 		update_env_value(key, value, env);
-		free(key);
-		free(value);
 	}
 	else
 	{
@@ -59,7 +86,8 @@ void	add_or_update_env(char *str, t_enviroment **env)
 	}
 }
 
-int	built_in_export(t_parser *parser, t_enviroment **env)
+
+int built_in_export(t_parser *parser, t_enviroment **env)
 {
 	int i;
 	char *orj_key;

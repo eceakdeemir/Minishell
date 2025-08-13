@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 16:36:53 by ecakdemi          #+#    #+#             */
+/*   Updated: 2025/08/13 17:39:59 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libraries/minishell.h"
 
 t_lexer	*create_new_lexer_node(char *str, t_token_enum token)
 {
 	t_lexer	*new_node;
 
-	new_node = malloc(sizeof(t_lexer));
+	new_node = mem_malloc(sizeof(t_lexer));
 	if (!new_node)
 		return (NULL);
 	new_node->word = str;
@@ -64,7 +76,7 @@ t_lexer	**lexer(char *line)
 	int		i;
 
 	i = 0;
-	head = malloc(sizeof(t_lexer *));
+	head = mem_malloc(sizeof(t_lexer *));
 	*head = NULL;
 	while (line[i])
 	{

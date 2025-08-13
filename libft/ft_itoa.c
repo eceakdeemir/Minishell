@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 18:01:09 by ecakdemi          #+#    #+#             */
-/*   Updated: 2024/11/01 18:36:33 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:39:59 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_itoa(int n)
 
 	number = n;
 	len = ft_nums_len(n);
-	result = (char *)malloc(sizeof(char) * len + 1);
+	result = (char *)mem_malloc(sizeof(char) * len + 1);
 	if (!result)
 		return (NULL);
 	if (number == 0)

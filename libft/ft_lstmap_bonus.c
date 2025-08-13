@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 13:31:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2024/10/30 14:07:44 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:45:43 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 			ft_lstadd_back(&list, new_node);
 		else
 		{
-			free(content);
 			ft_lstclear(&list, del);
 		}
 		lst = lst->next;

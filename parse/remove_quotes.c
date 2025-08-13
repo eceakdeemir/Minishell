@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 16:37:04 by ecakdemi          #+#    #+#             */
+/*   Updated: 2025/08/13 17:47:23 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libraries/minishell.h"
 
-char	*remove_quotes(char *word) // 25'den fazla satır uzunluğı
+char *remove_quotes(char *word) // 25'den fazla satır uzunluğı  
 {
 	char *result;
 	int i;
 	int j;
 
-	result = malloc(ft_strlen(word) + 1);
+	result = mem_malloc(ft_strlen(word) + 1);
 	i = 0;
 	j = 0;
 	while (word[i])
@@ -31,13 +43,13 @@ char	*remove_quotes(char *word) // 25'den fazla satır uzunluğı
 			result[j++] = word[i++];
 	}
 	result[j] = '\0';
-	return (result);
+	return(result);
 }
 
-void	remove_quotes_all(t_lexer **head)
+void remove_quotes_all(t_lexer **head)
 {
-	t_lexer	*temp;
-	char	*new_word;
+	t_lexer *temp;
+	char *new_word;
 
 	temp = *head;
 	while (temp != NULL)
@@ -45,7 +57,6 @@ void	remove_quotes_all(t_lexer **head)
 		if (temp->token_enum == TOKEN_WORD)
 		{
 			new_word = remove_quotes(temp->word);
-			free(temp->word);
 			temp->word = new_word;
 		}
 		temp = temp->next;
