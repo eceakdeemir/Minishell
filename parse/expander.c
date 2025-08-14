@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:47:19 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:55:24 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,37 +53,40 @@ void tokenize_expender(t_lexer **head, t_enviroment *env, t_main_struct *main_st
     while (tmp)
     {
         i = 0;
-        while (tmp->word[i])
+        if (tmp->heredoc_quoted == 0)
         {
-            if (tmp->word[i] == '\'') // tek tırnak varsa direk geçicek atlanıcak işlem yok. 
+            while (tmp->word[i])
             {
-                i++;
-                while (tmp->word[i] && tmp->word[i] != '\'')
-                    i++;
-                if (tmp->word[i] == '\'')
-                    i++;
-            }
-            else if (tmp->word[i] == '$') // bunun dışında her kelimede $ varsa expander etcek 
-            {
-                if (tmp->word[i + 1] == 0)
-                    return;
-                if (tmp->word[i + 1] == '?')
+                if (tmp->word[i] == '\'') // tek tırnak varsa direk geçicek atlanıcak işlem yok. 
                 {
-                    return_val = ft_itoa(main_struct->last_status);
-                    combine_expender(tmp, i, i + 2, return_val);
-                    i = 0;
-                    continue;
-                }
-                start = i;
-                i++;
-                while (tmp->word[i] && (ft_isalnum(tmp->word[i]) || tmp->word[i] == '_')) // değişkenin sonuna kadar gidilir. 
                     i++;
-                control_expender(start, i, env, tmp);
-                if (i - 1 != start)
-                    i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
+                    while (tmp->word[i] && tmp->word[i] != '\'')
+                        i++;
+                    if (tmp->word[i] == '\'')
+                        i++;
+                }
+                else if (tmp->word[i] == '$') // bunun dışında her kelimede $ varsa expander etcek 
+                {
+                    if (tmp->word[i + 1] == 0)
+                        return;
+                    if (tmp->word[i + 1] == '?')
+                    {
+                        return_val = ft_itoa(main_struct->last_status);
+                        combine_expender(tmp, i, i + 2, return_val);
+                        i = 0;
+                        continue;
+                    }
+                    start = i;
+                    i++;
+                    while (tmp->word[i] && (ft_isalnum(tmp->word[i]) || tmp->word[i] == '_')) // değişkenin sonuna kadar gidilir. 
+                        i++;
+                    control_expender(start, i, env, tmp);
+                    if (i - 1 != start)
+                        i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
+                }
+                else
+                    i++;
             }
-            else
-                i++;
         }
         tmp = tmp->next;
     }

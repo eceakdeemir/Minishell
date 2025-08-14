@@ -1,0 +1,18 @@
+"" tırnak ile belirtilen eof anahtarı, çift tırnaklar yok sayılarak değerlendirilir. Ex:
+cat << "$HOME" << "asd"
+> selam
+> "$HOME"
+> '$HOME'
+> $HOME
+> aselam
+> asd
+
+selam
+"$HOME"
+'$HOME'
+aselam
+
+
+
+
+

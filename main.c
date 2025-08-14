@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 14:24:11 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:41:33 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	process_line(char *line, t_main_struct *main_struct)
 }
 
 int main(int ac, char **av, char **envp)
-{ 
+{
 	char			*line;
 	t_main_struct	*main_struct;
 	int				org_o;

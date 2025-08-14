@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 14:51:03 by ibrahimbera      ###   ########.fr       */
+/*   Updated: 2025/08/14 16:54:20 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct, t_main_struct 
 		//free gelcek;
 		return (NULL);
 	}
-	tokenize_expender(head, *env_struct, main_struct);
 	decide_heredoc_quoted(*head);
+	tokenize_expender(head, *env_struct, main_struct);
 	remove_quotes_all(head);
 	t_parser *parser = main_parser_func(*head);
 	if (!parser)

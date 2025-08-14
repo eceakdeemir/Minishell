@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herodoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 14:55:23 by ibrahimbera      ###   ########.fr       */
+/*   Updated: 2025/08/14 16:45:06 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
