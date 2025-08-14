@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:41:40 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:51:03 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 #include <stdio.h>
 
-void	add_redirector(t_parser *cmd, t_token_enum type, char *file)
+void	add_redirector(t_parser *cmd, t_token_enum type, char *file, int hd_no_expand)
 {
 	t_redirector	*new;
 	t_redirector	*current;
@@ -21,6 +21,7 @@ void	add_redirector(t_parser *cmd, t_token_enum type, char *file)
 	new = mem_malloc(sizeof(t_redirector));
 	new->token_enum = type;
 	new->file = ft_strdup(file);
+	new->hd_no_expand = hd_no_expand;
 	new->herodoc_fd = -1;
 	new->next = NULL;
 	if (!cmd->redirector)
@@ -49,9 +50,10 @@ t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe
 	return (cmd);
 }
 
-void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komut olarak alınır eğer redirector ise yeni bir redirector adında node açar.
+
+void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (*lexer && (*lexer)->token_enum != TOKEN_PIPE)
@@ -63,7 +65,12 @@ void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)// burda kelime ise komu
 		}
 		else
 		{
-			add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word); // burda node yolların ve yeni bir struct yapısında tutulur.
+			if ((*lexer)->token_enum == TOKEN_HEREDOC && (*lexer)->next)
+				add_redirector(cmd, (*lexer)->token_enum,
+					(*lexer)->next->word, (*lexer)->next->heredoc_quoted);
+			else
+				add_redirector(cmd, (*lexer)->token_enum,
+					(*lexer)->next->word, 0);
 			*lexer = (*lexer)->next;
 			*lexer = (*lexer)->next;
 		}
@@ -104,6 +111,7 @@ t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct, t_main_struct 
 		return (NULL);
 	}
 	tokenize_expender(head, *env_struct, main_struct);
+	decide_heredoc_quoted(*head);
 	remove_quotes_all(head);
 	t_parser *parser = main_parser_func(*head);
 	if (!parser)

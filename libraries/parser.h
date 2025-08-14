@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 16:36:37 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:54:42 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,14 @@ typedef struct s_redirector
     enum s_token_enum token_enum;
     char *file;
     int herodoc_fd;
+    int				hd_no_expand; 
     struct s_redirector *next;
 } t_redirector;
 
 typedef struct s_lexer
 {
     char *word;
+    int	 heredoc_quoted;
     struct s_lexer *next;
     enum s_token_enum token_enum;
 } t_lexer;
@@ -104,7 +106,7 @@ void remove_quotes_all(t_lexer **head);
 char *remove_quotes(char *word);
 
 //parser.c
-void add_redirector(t_parser *cmd, t_token_enum type, char *file);
+void	add_redirector(t_parser *cmd, t_token_enum type, char *file, int hd_no_expand);
 t_parser *create_new_parser_node(t_lexer **lexer);
 void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer);
 t_parser *main_parser_func(t_lexer *lexer);
@@ -119,5 +121,12 @@ void    print_env_list(t_enviroment **env_list);
 //error.c
 int	check_redirector_error(t_lexer **lexer);
 int check_pipe_error(t_lexer *lexer);
+
+//heredoc_parser.c
+int	is_has_quote(const char *s);
+void	decide_heredoc_quoted(t_lexer *head);
+char *heredoc_combine_expender(char *line, int start, int end, char *control_value);
+char *heredoc_control_expender(int start, int end, t_enviroment *env, char *line);
+int	heredoc_fail_clear(t_parser *parser, t_main_struct *main_struct);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:03 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:54:46 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:56:42 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ static int	normalize_exit_code(t_parser *parser)
 }
 
 
-int built_in_exit(t_parser *parser)
+int built_in_exit(t_parser *parser, t_main_struct *main_struct)
 {
     int exit_code;
 
     ft_putendl_fd("exit", 1);
     if (!parser->args[1])
-        ft_exit(0);
+        exit(0);
     if (!check_is_numeric(parser->args[1]))
     {
         ft_putstr_fd("minishell: exit: ", 2);
         ft_putstr_fd(parser->args[1], 2);
         ft_putendl_fd(": numeric argument required", 2);
-        ft_exit(2);
+        exit(2);
     }
     if (parser->args[2])
     {
@@ -64,5 +64,6 @@ int built_in_exit(t_parser *parser)
         return(1);
     }
     exit_code = normalize_exit_code(parser);
-    return(exit_code);
+    main_struct->last_status = exit_code;
+    exit(exit_code);
 }

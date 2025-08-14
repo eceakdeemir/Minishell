@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:14 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 15:31:15 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:57:03 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int run_built_in(t_parser *parser, t_main_struct *main_struct)
 	else if (parser->built_type == ENV)
 		return (built_in_env(*main_struct->env_struct)); // version 1 (char **env using)
 	else if (parser->built_type == EXIT)
-		return (built_in_exit(parser));
+		return (built_in_exit(parser, main_struct));
 	printf("DEBUG: no built-in matched, built_type=%d\n", parser->built_type);
 	return (-1);
 }

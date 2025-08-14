@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 16:36:13 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:07:04 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int built_in_env(t_enviroment *env);
 int built_in_pwd(t_parser *parser);
 
 //built_in_exit.c
-int built_in_exit(t_parser *parser);
+int built_in_exit(t_parser *parser, t_main_struct *main_struct);
 
 int built_in_cd(t_parser *parser, t_enviroment **env);
 

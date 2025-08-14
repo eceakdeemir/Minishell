@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:31 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 16:37:32 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:56:02 by ibrahimbera      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,4 @@ void	handle_sigint_heredoc(int signo)
     (void)signo;
     g_signal = SIGINT;
     close(STDIN_FILENO);
-    write(STDOUT_FILENO, "\n", 1);
 }
