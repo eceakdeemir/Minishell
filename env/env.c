@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:19 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 19:53:26 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:23:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void update_env_value(const char *key, const char *value, t_enviroment **env)//v
     add_new_node_for_env(env, create_new_node_for_env(ft_strdup(key), ft_strdup(value)));
 }
 
-t_enviroment * init_env(char **envp, t_enviroment **env_list)
+void init_env(char **envp, t_enviroment **env_list)
 {
     t_enviroment *new_node;
 
@@ -103,8 +103,7 @@ t_enviroment * init_env(char **envp, t_enviroment **env_list)
         key = extract_key(envp[i]);
         value = extract_value(envp[i]);
         new_node = create_new_node_for_env(key, value);
-        // add_new_node_for_env(env_list, new_node);
+        add_new_node_for_env(env_list, new_node);
         i++;
     }
-    return (new_node);
 }

@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 19:56:16 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:24:11 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ static t_main_struct *init_main_struct(char **envp)
     env_list = mem_malloc(sizeof(t_enviroment *));
     main_struct = mem_malloc(sizeof(t_main_struct));
 
+	*env_list = NULL;
     if (!env_list || !main_struct)
         ft_exit(1);
     main_struct->last_status = 0;
-    env_list = (t_enviroment **)(init_env(envp, env_list));
+    init_env(envp, env_list);
     main_struct->env = envp;
     main_struct->env_struct = env_list;
     return (main_struct);
