@@ -54,7 +54,7 @@ int print_export(t_enviroment *env) //formatlı yazdırmak için
 	{
 		ft_putstr_fd("declare -x ", 1);
 		ft_putstr_fd(env->key, 1);
-		if (env->value)
+		if (env->value != NULL && env->value[0] != '\0')
 		{
 			ft_putstr_fd("=\"", 1);
 			ft_putstr_fd(env->value, 1);

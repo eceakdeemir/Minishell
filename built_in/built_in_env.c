@@ -17,7 +17,8 @@ int built_in_env(t_enviroment *env)
 {
     while (env)
     {
-        printf("%s=%s\n", env->key, env->value);
+        if(env->value && env->value[0] != '\0')
+            printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
     return (0);
