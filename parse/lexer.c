@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:53 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:39:59 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:38:29 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_lexer	*create_new_lexer_node(char *str, t_token_enum token)
 		return (NULL);
 	new_node->word = str;
 	new_node->token_enum = token;
+	new_node->heredoc_quoted = 0;
 	new_node->next = NULL;
 	return (new_node);
 }

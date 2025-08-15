@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 16:54:20 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:46:45 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,16 +104,16 @@ t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe gö
 
 t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct, t_main_struct *main_struct)
 {
+	t_parser *parser;
 	if (check_pipe_error(*head) || check_redirector_error(head))
 	{
 		main_struct->last_status = 2;
-		//free gelcek;
 		return (NULL);
 	}
 	decide_heredoc_quoted(*head);
 	tokenize_expender(head, *env_struct, main_struct);
 	remove_quotes_all(head);
-	t_parser *parser = main_parser_func(*head);
+	parser = main_parser_func(*head);
 	if (!parser)
 		return (NULL);
 	return (parser);

@@ -6,11 +6,37 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 16:55:24 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:06:57 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
+
+t_lexer **split_and_add(t_lexer *node)
+{
+    t_lexer **tmp_head;
+    char *word;
+    int i;
+    int start;
+
+    i = 0;
+    tmp_head = mem_calloc(sizeof(t_lexer *), 1);
+    if (!tmp_head)
+        return (NULL);
+    while (node->word[i])
+    {
+        while (node->word[i] == ' ')
+            i++;
+        start = i;
+        while (node->word[i] && node->word[i] != ' ')
+            i++;
+        word = ft_substr(node->word, start, i);
+        add_new_node_to_list(create_new_lexer_node(word, TOKEN_WORD), tmp_head);
+    }
+    return (tmp_head);
+}
+
+
 
 void combine_expender(t_lexer *tmp, int start, int end, char *control_value)
 {
@@ -22,7 +48,7 @@ void combine_expender(t_lexer *tmp, int start, int end, char *control_value)
     if (control_value)
     {
         tmp->word = ft_strjoin(first_part, control_value);
-        tmp->word = ft_strjoin(tmp->word, second_part);//memory leak var.
+        tmp->word = ft_strjoin(tmp->word, second_part);
     }
     else
         tmp->word = ft_strjoin(first_part, second_part);
@@ -32,7 +58,7 @@ void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp)
 {
     char *is_this_expender;
     char *control_value;
-    if (tmp->word[start] == '$' && end - 1 == start)
+    if (tmp->word[start] == '$' && ((end - 1) == start))
         combine_expender(tmp, start, end - 1, NULL);
     else
     {
@@ -42,14 +68,47 @@ void control_expender(int start, int end, t_enviroment *env, t_lexer *tmp)
     }
 }
 
+t_lexer *export_last_func(t_lexer **head)
+{
+    t_lexer *node;
+    node = *head;
+    while (node->next)
+        node = node->next;
+    return (node);
+}
+
+int has_it_space(char *str)
+{
+    int i;
+
+    i = 0;
+    if (str[i] == ' ')
+        return (1);
+    while (str[i])
+    {
+        if (str[i] == ' ')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+
+
 void tokenize_expender(t_lexer **head, t_enviroment *env, t_main_struct *main_struct) //25'den fazla satır uzunluğı  
 {
     t_lexer *tmp;
     int i;
     int start;
     char *return_val;
-    
+
+    t_lexer *tmp_prev;
+    t_lexer *export_last;
     tmp = *head;
+    i = 0;
+    start = 0;
+    return_val = NULL;
+    tmp_prev = NULL;
     while (tmp)
     {
         i = 0;
@@ -81,6 +140,16 @@ void tokenize_expender(t_lexer **head, t_enviroment *env, t_main_struct *main_st
                     while (tmp->word[i] && (ft_isalnum(tmp->word[i]) || tmp->word[i] == '_')) // değişkenin sonuna kadar gidilir. 
                         i++;
                     control_expender(start, i, env, tmp);
+                    if (has_it_space(tmp->word))
+                    {
+                        t_lexer **export_head = split_and_add(tmp);
+                        export_last = export_last_func(export_head);
+                        export_last->next = tmp->next;
+                        if (tmp_prev == NULL)
+                            *head = *export_head;
+                        else
+                            tmp_prev->next = *export_head;
+                    }
                     if (i - 1 != start)
                         i = 0; // her bir kelime için sıfır yapılır ki baştan tekrar döngüye girsin diye. 
                 }
@@ -88,6 +157,7 @@ void tokenize_expender(t_lexer **head, t_enviroment *env, t_main_struct *main_st
                     i++;
             }
         }
+        tmp_prev = tmp;
         tmp = tmp->next;
     }
 }

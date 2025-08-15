@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibrahimberatgurses <ibrahimberatgurses@    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/14 14:54:42 by ibrahimbera      ###   ########.fr       */
+/*   Updated: 2025/08/15 18:07:56 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
