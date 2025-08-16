@@ -6,13 +6,13 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 15:12:13 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:54:41 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-sig_atomic_t		g_signal = 0;
+sig_atomic_t	g_signal = 0;
 
 void	setup_signals(int context)
 {
@@ -23,4 +23,3 @@ void	setup_signals(int context)
 	else if (context == HEREDOC_MODE)
 		setup_signals_heredoc();
 }
-

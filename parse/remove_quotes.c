@@ -6,17 +6,17 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 15:29:50 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:49:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-char *remove_quotes(char *word) // 25'den fazla satır uzunluğı  
+char	*remove_quotes(char *word)
 {
-	char *result;
-	int i;
-	int j;
+	char	*result;
+	int		i;
+	int		j;
 
 	result = mem_malloc(ft_strlen(word) + 1);
 	i = 0;
@@ -43,13 +43,13 @@ char *remove_quotes(char *word) // 25'den fazla satır uzunluğı
 			result[j++] = word[i++];
 	}
 	result[j] = '\0';
-	return(result);
+	return (result);
 }
 
-void remove_quotes_all(t_lexer **head)
+void	remove_quotes_all(t_lexer **head)
 {
-	t_lexer *temp;
-	char *new_word;
+	t_lexer	*temp;
+	char	*new_word;
 
 	temp = *head;
 	while (temp != NULL)

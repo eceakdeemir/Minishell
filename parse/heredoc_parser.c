@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 13:42:48 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 14:01:04 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:45:38 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,36 +41,39 @@ void	decide_heredoc_quoted(t_lexer *head)
 	}
 }
 
-char *heredoc_combine_expender(char *line, int start, int end, char *control_value)
+char	*heredoc_combine_expender(char *line, int start, int end,
+		char *control_value)
 {
-    char *first_part;
-    char *second_part;
+	char	*first_part;
+	char	*second_part;
 
-    first_part = ft_substr(line, 0, start);
-    second_part = ft_substr(line, end, ft_strlen(line) - end + 1);
-    if (control_value)
-    {
-        line = ft_strjoin(first_part, control_value);
-        line = ft_strjoin(line, second_part);
-    }
-    else
-        line = ft_strjoin(first_part, second_part);
-    return (line);
+	first_part = ft_substr(line, 0, start);
+	second_part = ft_substr(line, end, ft_strlen(line) - end + 1);
+	if (control_value)
+	{
+		line = ft_strjoin(first_part, control_value);
+		line = ft_strjoin(line, second_part);
+	}
+	else
+		line = ft_strjoin(first_part, second_part);
+	return (line);
 }
 
-char *heredoc_control_expender(int start, int end, t_enviroment *env, char *line)
+char	*heredoc_control_expender(int start, int end, t_enviroment *env,
+		char *line)
 {
-    char *is_this_expender;
-    char *control_value;
-    if (line[start] == '$' && end - 1 == start)
-        line = heredoc_combine_expender(line, start, end - 1, NULL);
-    else
-    {
-        is_this_expender = ft_substr(line, start + 1, end - start - 1);
-        control_value = get_env_value(is_this_expender, env);
-        line = heredoc_combine_expender(line, start, end, control_value);
-    }
-    return (line);
+	char	*is_this_expender;
+	char	*control_value;
+
+	if (line[start] == '$' && end - 1 == start)
+		line = heredoc_combine_expender(line, start, end - 1, NULL);
+	else
+	{
+		is_this_expender = ft_substr(line, start + 1, end - start - 1);
+		control_value = get_env_value(is_this_expender, env);
+		line = heredoc_combine_expender(line, start, end, control_value);
+	}
+	return (line);
 }
 
 int	heredoc_fail_clear(t_parser *parser, t_main_struct *main_struct)

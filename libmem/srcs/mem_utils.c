@@ -6,15 +6,13 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 19:21:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 19:21:05 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 17:39:11 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
+#include "libmem.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include "libmem.h"
 
 void	*mem_exit(void)
 {

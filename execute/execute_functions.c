@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:05:13 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:26:14 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	main_run_built_in(t_main_struct *main_struct, t_parser *parser)
 	int	return_code;
 
 	setup_signals(EXECUTING_MODE);
-	return_code = run_built_in(parser, main_struct); // fork açmadan çalıştır.
+	return_code = run_built_in(parser, main_struct);
 	if (return_code < 0)
 		main_struct->last_status = 1;
 	else

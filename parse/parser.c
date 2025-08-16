@@ -6,14 +6,15 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 16:46:45 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:48:07 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 #include <stdio.h>
 
-void	add_redirector(t_parser *cmd, t_token_enum type, char *file, int hd_no_expand)
+void	add_redirector(t_parser *cmd, t_token_enum type, char *file,
+		int hd_no_expand)
 {
 	t_redirector	*new;
 	t_redirector	*current;
@@ -35,10 +36,10 @@ void	add_redirector(t_parser *cmd, t_token_enum type, char *file, int hd_no_expa
 	}
 }
 
-t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe kadar komut node'u açar.
+t_parser	*create_new_parser_node(t_lexer **lexer)
 {
-	t_parser *cmd;
-	int count;
+	t_parser	*cmd;
+	int			count;
 
 	cmd = mem_calloc(1, sizeof(t_parser));
 	count = count_args(*lexer);
@@ -46,10 +47,9 @@ t_parser	*create_new_parser_node(t_lexer **lexer) // buraya geldikten sonra pipe
 	if (!cmd->args)
 		return (NULL);
 	cmd->redirector = NULL;
-	fill_args_to_parser(cmd, lexer); // en son bu fonksiyona gider. int yaptım çünkü hata döndüremiyordum seg yiyordum.
+	fill_args_to_parser(cmd, lexer);
 	return (cmd);
 }
-
 
 void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)
 {
@@ -66,11 +66,11 @@ void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)
 		else
 		{
 			if ((*lexer)->token_enum == TOKEN_HEREDOC && (*lexer)->next)
-				add_redirector(cmd, (*lexer)->token_enum,
-					(*lexer)->next->word, (*lexer)->next->heredoc_quoted);
+				add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word,
+					(*lexer)->next->heredoc_quoted);
 			else
-				add_redirector(cmd, (*lexer)->token_enum,
-					(*lexer)->next->word, 0);
+				add_redirector(cmd, (*lexer)->token_enum, (*lexer)->next->word,
+					0);
 			*lexer = (*lexer)->next;
 			*lexer = (*lexer)->next;
 		}
@@ -78,17 +78,17 @@ void	fill_args_to_parser(t_parser *cmd, t_lexer **lexer)
 	cmd->args[i] = NULL;
 }
 
-t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe göre komutlara çeviriyorum.
+t_parser	*main_parser_func(t_lexer *lexer)
 {
-	t_parser *head;
-	t_parser *current;
+	t_parser	*head;
+	t_parser	*current;
+	t_parser	*cmd;
 
 	head = NULL;
 	current = NULL;
 	while (lexer)
 	{
-		t_parser *cmd;
-		cmd = create_new_parser_node(&lexer); // yeni parser node oluştura gider
+		cmd = create_new_parser_node(&lexer);
 		if (!cmd)
 			return (NULL);
 		if (!head)
@@ -96,15 +96,17 @@ t_parser	*main_parser_func(t_lexer *lexer) // lexerdan gelen kelimeleri pipe gö
 		else
 			current->next = cmd;
 		current = cmd;
-		if (lexer && lexer->token_enum == TOKEN_PIPE) // pipesa geçer.
+		if (lexer && lexer->token_enum == TOKEN_PIPE)
 			lexer = lexer->next;
 	}
 	return (head);
 }
 
-t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct, t_main_struct *main_struct)
+t_parser	*parser_funct(t_lexer **head, t_enviroment **env_struct,
+		t_main_struct *main_struct)
 {
-	t_parser *parser;
+	t_parser	*parser;
+
 	if (check_pipe_error(*head) || check_redirector_error(head))
 	{
 		main_struct->last_status = 2;

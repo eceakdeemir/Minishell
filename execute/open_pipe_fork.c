@@ -6,26 +6,25 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:55:15 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 18:25:11 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
-#include "../libraries/execute.h"
 
-extern sig_atomic_t g_signal;
+extern sig_atomic_t	g_signal;
 
-void path_found_and_execute(t_parser *current, t_main_struct *main_struct)
+void	path_found_and_execute(t_parser *current, t_main_struct *main_struct)
 {
-	char *path;
-	char **temporary_execve_env;
-	path = find_path(current->args[0], main_struct);
+	char	*path;
+	char	**temporary_execve_env;
 
+	path = find_path(current->args[0], main_struct);
 	if (!path)
 	{
 		ft_putstr_fd("command not found: ", 2);
 		ft_putendl_fd(current->args[0], 2);
-		ft_exit(127); // düzeltilicek
+		ft_exit(127);
 	}
 	env_converter_to_execve(main_struct, &temporary_execve_env);
 	execve(path, current->args, temporary_execve_env);
@@ -33,7 +32,8 @@ void path_found_and_execute(t_parser *current, t_main_struct *main_struct)
 	ft_exit(126);
 }
 
-void arrangement_dup(int pipes[][2], int pipe_count, t_parser *current, int i)
+void	arrangement_dup(int **pipes, int pipe_count, t_parser *current,
+		int i)
 {
 	reset_signals();
 	if (i != 0)
@@ -43,13 +43,14 @@ void arrangement_dup(int pipes[][2], int pipe_count, t_parser *current, int i)
 	close_pipes(pipe_count, pipes);
 }
 
-int forks_and_exec_commands(t_parser *parser, int pipes[][2], int pipe_count, t_main_struct *main_struct)
+int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
+		t_main_struct *main_struct)
 {
-	t_parser *current;
-	int i;
-	pid_t pid;
-	int control_value;
-    int control_redirector;
+	t_parser	*current;
+	int			i;
+	pid_t		pid;
+	int			control_value;
+	int			control_redirector;
 
 	current = parser;
 	i = 0;
@@ -73,16 +74,16 @@ int forks_and_exec_commands(t_parser *parser, int pipes[][2], int pipe_count, t_
 			else
 				path_found_and_execute(current, main_struct);
 		}
-		else
-			if (current->next == NULL)
-				main_struct->last_child_pid = pid;
+		else if (current->next == NULL)
+			main_struct->last_child_pid = pid;
 		current = current->next;
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
-void	wait_all_child(int i, int status, t_main_struct *main_struct, t_parser *parser)
+void	wait_all_child(int i, int status, t_main_struct *main_struct,
+		t_parser *parser)
 {
 	pid_t		pid;
 	t_wait_ctx	ctx;
@@ -106,15 +107,19 @@ void	wait_all_child(int i, int status, t_main_struct *main_struct, t_parser *par
 	g_signal = 0;
 }
 
-void execute_main(t_parser *parser, t_main_struct *main_struct)
+void	execute_main(t_parser *parser, t_main_struct *main_struct)
 {
-	int pipe_count;
-	int status;
-	int i;
+	int			pipe_count;
+	int			status;
+	int			i;
+	t_parser	*current;
+	int			**pipes;
 
-	t_parser *current;
+	i = -1;
 	pipe_count = count_cmd(parser) - 1;
-	int pipes[pipe_count][2];
+	pipes = mem_malloc(sizeof(int *) * pipe_count);
+	while (++i < pipe_count)
+		pipes[i] = mem_malloc(sizeof(int) * 2);
 	create_pipes(pipe_count, pipes);
 	forks_and_exec_commands(parser, pipes, pipe_count, main_struct);
 	close_pipes(pipe_count, pipes);

@@ -6,11 +6,11 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 15:54:34 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 15:55:47 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:33:45 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libraries/minishell.h"
+#include "../libraries/minishell.h"
 
 t_enviroment	*create_new_node_for_env(char *key, char *value)
 {

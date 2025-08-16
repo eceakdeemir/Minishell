@@ -6,15 +6,15 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:43 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:55:52 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 17:27:08 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-char *control_path(char **cmd, t_main_struct *main_struct)
+char	*control_path(char **cmd, t_main_struct *main_struct)
 {
-    char	*path;
+	char	*path;
 
 	if (has_slash(cmd[0]))
 		path = ft_strdup(cmd[0]);
@@ -31,9 +31,9 @@ char *control_path(char **cmd, t_main_struct *main_struct)
 	return (path);
 }
 
-void is_acces_path(char *path)
+void	is_acces_path(char *path)
 {
-    struct stat	st;
+	struct stat	st;
 
 	if (stat(path, &st) == -1)
 	{
@@ -59,12 +59,10 @@ void is_acces_path(char *path)
 
 void	exec_or_die(const char *path, char **argv, t_main_struct *main_struct)
 {
-	char	**envp;
+	char		**envp;
 
 	env_converter_to_execve(main_struct, &envp);
 	execve(path, argv, envp);
-
-	/* buraya sadece hata ile gelinir */
 	if (errno == EACCES)
 	{
 		message_error2(path, "Permission denied");

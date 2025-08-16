@@ -6,73 +6,67 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 18:04:03 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:39:54 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include "../libmem/incs/mem_utils.h"
-#include "parser.h"
-#include "enviroment.h"
-#include "execute.h"
-#include "built_in.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
+# include "../libmem/incs/mem_utils.h"
+# include "built_in.h"
+# include "enviroment.h"
+# include "execute.h"
+# include "parser.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
-#define INTERACTIVE_MODE 0
-#define EXECUTING_MODE 1
-#define HEREDOC_MODE 2
-extern sig_atomic_t g_signal;
+# define INTERACTIVE_MODE 0
+# define EXECUTING_MODE 1
+# define HEREDOC_MODE 2
 
-// free/free.c
-void free_argv(char **argv);
+extern sig_atomic_t	g_signal;
 
-// redirector/redirector.c
-int redirector_funct(t_parser *parser);
+void				free_argv(char **argv);
 
-// redirector/append.c
-int append(t_redirector *redirector);
+int					redirector_funct(t_parser *parser);
 
-// redirector/output.c
-int output(t_redirector *redirector);
+int					append(t_redirector *redirector);
 
-// redirector/input.c
-int input(t_redirector *redirector);
+int					output(t_redirector *redirector);
 
-// redirector/herodoc.c
-int prepare_heredocs(t_parser *parser, t_enviroment *env, t_main_struct *main_struct);
+int					input(t_redirector *redirector);
 
-// signal
-void setup_signals(int context);
-void setup_signals_interactive(void);
-void setup_signals_executing(void);
-void setup_signals_heredoc(void);
-void reset_signals(void);
-void handle_sigint_interactive(int signo);
-void handle_sigint_executing(int signo);
-void handle_sigquit_executing(int signo);
-void handle_sigint_heredoc(int signo);
+int					prepare_heredocs(t_parser *parser, t_enviroment *env,
+						t_main_struct *main_struct);
 
-// utils/helper_utils.c
-void compact_args(char **args);
-void compact_all_commands(t_parser *head);
-void message_error2(const char *name, const char *msg);
-int has_slash(const char *s);
+void				setup_signals(int context);
+void				setup_signals_interactive(void);
+void				setup_signals_executing(void);
+void				setup_signals_heredoc(void);
+void				reset_signals(void);
+void				handle_sigint_interactive(int signo);
+void				handle_sigint_executing(int signo);
+void				handle_sigquit_executing(int signo);
+void				handle_sigint_heredoc(int signo);
 
-// utils/helper_for_execute.c
-char *control_path(char **cmd, t_main_struct *main_struct);
-void is_acces_path(char *path);
-void	exec_or_die(const char *path, char **argv, t_main_struct *main_struct);
+void				compact_args(char **args);
+void				compact_all_commands(t_parser *head);
+void				message_error2(const char *name, const char *msg);
+int					has_slash(const char *s);
+
+char				*control_path(char **cmd, t_main_struct *main_struct);
+void				is_acces_path(char *path);
+void				exec_or_die(const char *path, char **argv,
+						t_main_struct *main_struct);
 
 #endif
