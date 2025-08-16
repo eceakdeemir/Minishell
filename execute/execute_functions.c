@@ -6,68 +6,69 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 16:57:16 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:05:13 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
-#include "../libraries/execute.h"
 
-extern sig_atomic_t g_signal;
+extern sig_atomic_t	g_signal;
 
-int main_redirector(t_parser *parser, int control_value)
+int	main_redirector(t_parser *parser, int control_value)
 {
-    if (parser && parser->redirector)
-        control_value = redirector_funct(parser);
-    if (control_value == -1)
-        return (-1);
-    return (0);
+	if (parser && parser->redirector)
+		control_value = redirector_funct(parser);
+	if (control_value == -1)
+		return (-1);
+	return (0);
 }
 
-void check_signal_and_built(int control_value, t_main_struct *main_struct, t_parser *parser, char **cmd)
+void	check_signal_and_built(int control_value, t_main_struct *main_struct,
+		t_parser *parser, char **cmd)
 {
-    pid_t pid;
+	pid_t	pid;
+	int		sig;
 
-    pid = fork();
-    if (pid == 0)
-    {
-        reset_signals();
-        this_is_not_built_in(cmd, main_struct, parser);
-    }
-    waitpid(pid, &control_value, 0);
-    if (WIFSIGNALED(control_value))
-    {
-        int sig = WTERMSIG(control_value);
-
-        if (sig == SIGINT)
-        {
-            write(STDOUT_FILENO, "\n", 1);
-            main_struct->last_status = 130;
-        }
-        else if (sig == SIGQUIT)
-        {
-            write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
-            main_struct->last_status = 131;
-        }
-    }
-    else if (WIFEXITED(control_value))
-        main_struct->last_status = WEXITSTATUS(control_value);
+	pid = fork();
+	if (pid == 0)
+	{
+		reset_signals();
+		this_is_not_built_in(cmd, main_struct, parser);
+	}
+	waitpid(pid, &control_value, 0);
+	if (WIFSIGNALED(control_value))
+	{
+		sig = WTERMSIG(control_value);
+		if (sig == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			main_struct->last_status = 130;
+		}
+		else if (sig == SIGQUIT)
+		{
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+			main_struct->last_status = 131;
+		}
+	}
+	else if (WIFEXITED(control_value))
+		main_struct->last_status = WEXITSTATUS(control_value);
 }
 
-void main_run_built_in(t_main_struct *main_struct, t_parser *parser)
+void	main_run_built_in(t_main_struct *main_struct, t_parser *parser)
 {
-    int return_code;
+	int	return_code;
 
-    setup_signals(EXECUTING_MODE);
-    return_code = run_built_in(parser, main_struct); // fork açmadan çalıştır.
-    if (return_code < 0)
-        main_struct->last_status = 1;
-    else
-        main_struct->last_status = return_code;
-    setup_signals(INTERACTIVE_MODE);
+	setup_signals(EXECUTING_MODE);
+	return_code = run_built_in(parser, main_struct); // fork açmadan çalıştır.
+	if (return_code < 0)
+		main_struct->last_status = 1;
+	else
+		main_struct->last_status = return_code;
+	setup_signals(INTERACTIVE_MODE);
 }
 
-void this_is_not_built_in(char **cmd, t_main_struct *main_struct, t_parser *parser)
+void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
+		t_parser *parser)
 {
 	char	*path;
 
@@ -77,36 +78,36 @@ void this_is_not_built_in(char **cmd, t_main_struct *main_struct, t_parser *pars
 	exec_or_die(path, cmd, main_struct);
 }
 
-int execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
+int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 {
-    int cmd_count;
-    int control_value;
-    int control_redirector;
+	int	cmd_count;
+	int	control_value;
+	int	control_redirector;
 
-    g_signal = 0;
-    control_value = 0;
-    cmd_count = count_cmd(parser);
-    if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
-        return (-1);
-    if (cmd_count == 1)
-    {
-        setup_signals(EXECUTING_MODE);
-        control_redirector = main_redirector(parser, control_value);
-        if (control_redirector == -1)
-        {
-            main_struct->last_status = 1;
-            return (-1);
-        }
-        if (parser->built_type >= 0 && parser->built_type <= 6)
-            main_run_built_in(main_struct, parser);
-        else
-            check_signal_and_built(control_value, main_struct, parser, cmd);
-    }
-    else
-    {
-        setup_signals(EXECUTING_MODE);
-        execute_main(parser, main_struct);
-    }
-    setup_signals(INTERACTIVE_MODE);
-    return (0);
+	g_signal = 0;
+	control_value = 0;
+	cmd_count = count_cmd(parser);
+	if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
+		return (-1);
+	if (cmd_count == 1)
+	{
+		setup_signals(EXECUTING_MODE);
+		control_redirector = main_redirector(parser, control_value);
+		if (control_redirector == -1)
+		{
+			main_struct->last_status = 1;
+			return (-1);
+		}
+		if (parser->built_type >= 0 && parser->built_type <= 6)
+			main_run_built_in(main_struct, parser);
+		else
+			check_signal_and_built(control_value, main_struct, parser, cmd);
+	}
+	else
+	{
+		setup_signals(EXECUTING_MODE);
+		execute_main(parser, main_struct);
+	}
+	setup_signals(INTERACTIVE_MODE);
+	return (0);
 }

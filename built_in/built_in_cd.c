@@ -6,66 +6,73 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:30:07 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 15:30:08 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 15:25:58 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libraries/built_in.h"
 #include "../libraries/minishell.h"
-#include "../libraries/enviroment.h"
 
 
-char *get_target_directory(t_parser *parser, t_enviroment **env) //
+static int	arg_count(char **args)
 {
-	if (parser->args[2])
+	int i = 0;
+	while (args && args[i])
+		i++;
+	return (i);
+}
+
+char	*get_target_directory(t_parser *parser, t_enviroment **env)
+{
+	char	*home;
+	int		arg_len;
+
+	arg_len = 0;
+	while (parser->args && parser->args[arg_len])
+		arg_len++;
+	if (arg_len > 2)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", 2);
 		return (NULL);
 	}
-	if (!parser->args[1])
+	if (arg_len == 1 && env)
 	{
-		char *home = get_env_value("HOME", *env);
+		home = get_env_value("HOME", (*env));
 		if (!home)
 			ft_putendl_fd("minishell: cd: HOME not set", 2);
-		return home;
+		return (home);
 	}
 	return (parser->args[1]);
 }
 
-void update_cd_env(t_enviroment **env, char *old_pwd)
+void	update_cd_env(t_enviroment **env, char *old_pwd)
 {
-	char cwd[4096]; //current working directory
+	char	cwd[4096];
 
 	if (old_pwd)
 		update_env_value("OLDPWD", old_pwd, env);
-	if (getcwd(cwd, sizeof(cwd))) //o anki çalışma dizininin tam pathini verir.
+	if (getcwd(cwd, sizeof(cwd)))
 		update_env_value("PWD", cwd, env);
 }
-
-int built_in_cd(t_parser *parser, t_enviroment **env)
+int	built_in_cd(t_parser *parser, t_enviroment **env)
 {
-	char *target_directory; //gitmek istediğin hedef dizin
-	char *old_pwd;
+	char	*old_pwd;
+	char	*target_directory;
 
-	old_pwd = get_env_value("PWD", *env); //pwd oldpwdde tutulacak, pwd değişecek.
-	if (parser->args[2]) //cd 1 argüman almalı.
+	if (arg_count(parser->args) > 2)
 	{
-		ft_putendl_fd(" too many arguments", 2);
+		ft_putendl_fd("too many arguments", 2);
 		return (1);
 	}
 	target_directory = get_target_directory(parser, env);
 	if (!target_directory)
 		return (1);
 	old_pwd = get_env_value("PWD", *env);
-	if (chdir(target_directory) != 0)//chdir çalıştığı için başarılı olduğunda dizin değişmiş olacak. düzgün çalıştığında 0 döndürür
+	if (chdir(target_directory) != 0)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
-		perror(target_directory); //sistemden gelen hata mesajını direkt eklemek için
+		perror(target_directory);
 		return (1);
 	}
 	update_cd_env(env, old_pwd);
 	return (0);
 }
-
-
-

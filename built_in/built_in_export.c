@@ -6,15 +6,13 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:06 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:45:05 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/16 15:40:00 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libraries/built_in.h"
-#include "../libraries/enviroment.h"
+#include "../libraries/minishell.h"
 
-//0 başarılı - 1 hata
-void print_export_error(char *str)
+void	print_export_error(char *str)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(str, 2);
@@ -48,7 +46,7 @@ int	is_valid_env_name(char *s)
 	return (1);
 }
 
-int print_export(t_enviroment *env) //formatlı yazdırmak için
+int	print_export(t_enviroment *env)
 {
 	while (env)
 	{
@@ -66,11 +64,11 @@ int print_export(t_enviroment *env) //formatlı yazdırmak için
 	return (0);
 }
 
-void add_or_update_env(char *str, t_enviroment **env)
+void	add_or_update_env(char *str, t_enviroment **env)
 {
-	char *equal_sign;
-	char *key;
-	char *value;
+	char	*equal_sign;
+	char	*key;
+	char	*value;
 
 	equal_sign = ft_strchr(str, '=');
 	if (equal_sign)
@@ -86,12 +84,9 @@ void add_or_update_env(char *str, t_enviroment **env)
 	}
 }
 
-
-int built_in_export(t_parser *parser, t_enviroment **env)
+int	built_in_export(t_parser *parser, t_enviroment **env)
 {
-	int i;
-	char *orj_key;
-	char *orj_value;
+	int	i;
 
 	i = 1;
 	if (!parser->args[1])

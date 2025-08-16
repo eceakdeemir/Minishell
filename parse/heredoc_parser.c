@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_parser.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/16 13:42:48 by ecakdemi          #+#    #+#             */
+/*   Updated: 2025/08/16 14:01:04 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libraries/minishell.h"
 
 int	is_has_quote(const char *s)
@@ -39,7 +51,7 @@ char *heredoc_combine_expender(char *line, int start, int end, char *control_val
     if (control_value)
     {
         line = ft_strjoin(first_part, control_value);
-        line = ft_strjoin(line, second_part); // memory leak var.
+        line = ft_strjoin(line, second_part);
     }
     else
         line = ft_strjoin(first_part, second_part);

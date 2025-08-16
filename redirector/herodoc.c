@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herodoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 12:43:44 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/16 14:29:30 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,22 @@ static void heredoc_child_process(char *limiter, t_enviroment *env, t_main_struc
 {
     char *line;
     
-    reset_signals();
+    setup_signals(HEREDOC_MODE);
     while (1)
     {
-        line = readline("> ");
+        line = mem_absorb(readline("> "));
         if (!line)
             break;
         if (!hd_no_quoted)
             line = heredoc_tokenize_expender(line, env, main_struct);
-            
         if (line && ft_strcmp(line, limiter) == 0)
         {
-            free(line);
             break;
         }
         ft_putendl_fd(line, write_fd);
-        free(line);
     }
     close(write_fd);
-    exit(0);
+    ft_exit(0);
 }
 
 static int wait_child_for_heredoc(pid_t pid, int pipefd[2], t_main_struct *main_struct)
@@ -88,7 +85,7 @@ static int wait_child_for_heredoc(pid_t pid, int pipefd[2], t_main_struct *main_
         main_struct->last_status = 130;
         return(-1);
     }
-    if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+    else if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
     {
         close(pipefd[0]);
         return(-1);
@@ -115,14 +112,16 @@ static int create_heredoc_file(char *limiter, t_enviroment *env, t_main_struct *
         close(pipefd[1]);
         return (-1);
     }
-    
     if (pid == 0)
     {
         close(pipefd[0]);
         heredoc_child_process(limiter, env, main_struct, hd_no_quoted, pipefd[1]);
     }
     if (wait_child_for_heredoc(pid, pipefd, main_struct) == -1)
-            return (-1);
+    {
+        printf("en son burdan çıktım\n");
+        return (-1);   
+    }
     return pipefd[0];
 }
 
@@ -135,7 +134,8 @@ int prepare_heredocs(t_parser *parser, t_enviroment *env, t_main_struct *main_st
     {
         if (redir->token_enum == TOKEN_HEREDOC)
         {
-            setup_signals(HEREDOC_MODE);
+            signal(SIGINT, SIG_IGN);
+            signal(SIGQUIT, SIG_IGN);
             redir->herodoc_fd = create_heredoc_file(redir->file, env, main_struct, redir->hd_no_expand);
             setup_signals(INTERACTIVE_MODE);
             if (redir->herodoc_fd  == -1 || g_signal == SIGINT)
