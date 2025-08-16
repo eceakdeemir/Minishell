@@ -66,9 +66,6 @@ static void	process_line(char *line, t_main_struct *main)
 	if (!lexer_head || !*lexer_head)
 		return ;
 	parser_head = parser_funct(lexer_head, main->env_struct, main);
-	// for (t_parser *i = parser_head;i; i = i->next)
-	// 	for (size_t d = 0; i->args[d]; d++)
-	// 		printf("args:%s\n", i->args[d]);
 	compact_all_commands(parser_head);
 	if (!parser_head)
 		return ;

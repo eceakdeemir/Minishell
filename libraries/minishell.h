@@ -36,7 +36,6 @@
 
 extern sig_atomic_t	g_signal;
 
-void				free_argv(char **argv);
 
 int					redirector_funct(t_parser *parser);
 
@@ -68,5 +67,10 @@ char				*control_path(char **cmd, t_main_struct *main_struct);
 void				is_acces_path(char *path);
 void				exec_or_die(const char *path, char **argv,
 						t_main_struct *main_struct);
+
+typedef struct s_expender_params {
+	t_enviroment	*env;
+	t_main_struct	*main_struct;
+}	t_expender_params;
 
 #endif
