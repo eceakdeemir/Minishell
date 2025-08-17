@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 16:58:11 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/17 19:45:58 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int if_no_heredoc(t_parser *parser)
 	t_parser *current;
 
 	current = parser;
-	while (current)
+	while (current && current->redirector)
 	{
 		if (current->redirector->token_enum == TOKEN_HEREDOC)
 			return(0);

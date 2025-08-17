@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirector.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:26 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 16:50:21 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/17 21:02:40 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	redirector_funct(t_parser *parser)
 	redirector_tmp = parser->redirector;
 	while (redirector_tmp)
 	{
-		
 		if (redirector_tmp->token_enum == TOKEN_APPEND)
 			return_value = append(redirector_tmp);
 		else if (redirector_tmp->token_enum == TOKEN_OUTPUT)

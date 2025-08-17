@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 12:46:12 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/17 20:54:02 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 	g_signal = 0;
 	control_value = 0;
 	cmd_count = count_cmd(parser);
-	if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
-		return (-1);
 	if (cmd_count == 1)
 	{
+		if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
+			return (-1);
 		setup_signals(EXECUTING_MODE);
 		control_redirector = main_redirector(parser, control_value);
 		if (control_redirector == -1)
