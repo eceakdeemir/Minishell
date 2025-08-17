@@ -5,7 +5,8 @@
         "minishell.h": "c",
         "readline.h": "c",
         "execute.h": "c",
-        "history.h": "c"
+        "history.h": "c",
+        "string": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

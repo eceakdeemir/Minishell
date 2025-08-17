@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:39:54 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 16:28:17 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					redirector_funct(t_parser *parser);
 
 int					append(t_redirector *redirector);
 
-int					output(t_redirector *redirector);
+int					output(t_redirector *redirector_tmp);
 
 int					input(t_redirector *redirector);
 
@@ -67,6 +67,9 @@ char				*control_path(char **cmd, t_main_struct *main_struct);
 void				is_acces_path(char *path);
 void				exec_or_die(const char *path, char **argv,
 						t_main_struct *main_struct);
+char	*heredoc_tokenize_expender(char *line, t_enviroment *env,
+		t_main_struct *main_struct);
+
 
 typedef struct s_expender_params {
 	t_enviroment	*env;

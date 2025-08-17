@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 18:04:23 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 14:43:49 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,14 @@ static void	process_line(char *line, t_main_struct *main)
 	parser_head = parser_funct(lexer_head, main->env_struct, main);
 	compact_all_commands(parser_head);
 	if (!parser_head)
-		return ;
+	return ;
 	if (!parser_head->args || !parser_head->args[0])
-		handle_no_command(parser_head, main);
+	handle_no_command(parser_head, main);
 	else
 	{
+
 		add_built_in_token(&parser_head);
+
 		execute(parser_head->args, main, parser_head);
 	}
 }

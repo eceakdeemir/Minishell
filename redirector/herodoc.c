@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herodoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:50:58 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 15:02:22 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern sig_atomic_t	g_signal;
 
-static char	*heredoc_tokenize_expender(char *line, t_enviroment *env,
+char	*heredoc_tokenize_expender(char *line, t_enviroment *env,
 		t_main_struct *main_struct)
 {
 	int		i;
@@ -122,7 +122,6 @@ static int	create_heredoc_file(char *limiter, t_enviroment *env,
 	}
 	if (wait_child_for_heredoc(pid, pipefd, main_struct) == -1)
 	{
-		printf("en son burdan çıktım\n");
 		return (-1);
 	}
 	return (pipefd[0]);

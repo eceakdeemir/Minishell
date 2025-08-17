@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:26:14 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 12:46:12 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 	int	cmd_count;
 	int	control_value;
 	int	control_redirector;
-
+	
 	g_signal = 0;
 	control_value = 0;
 	cmd_count = count_cmd(parser);

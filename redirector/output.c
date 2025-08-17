@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:22 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:53:01 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 16:27:48 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-int	output(t_redirector *redirector)
+int	output(t_redirector *redirector_tmp)
 {
 	int	fd;
-
-	fd = open(redirector->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	
+	fd = open(redirector_tmp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("open >");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:14 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:43:53 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 12:45:27 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@ void	add_built_in_token(t_parser **head)
 	int			i;
 	char const	*built_in[8] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
-
+		
 	new_parser = *head;
 	while (new_parser)
 	{
+
 		new_parser->built_type = -1;
 		if (control_new_parser_args(new_parser) == -1)
-			continue ;
+			break ;	
+
 		i = 0;
 		while (built_in[i])
 		{

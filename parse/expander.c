@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:28:35 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 12:11:55 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,31 @@ void	control_expender(int start, int end, t_enviroment *env, t_lexer *tmp)
 	}
 }
 
+static t_lexer	*export_last_func(t_lexer **head)
+{
+	t_lexer	*node;
+
+	node = *head;
+	while (node->next)
+		node = node->next;
+	return (node);
+}
+
+static int	has_it_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == ' ')
+		return (1);
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	tokenize_expender(t_lexer **head, t_enviroment *env,
 		t_main_struct *main_struct)

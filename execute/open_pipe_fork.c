@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 18:25:11 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/17 16:58:11 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,90 @@ void	path_found_and_execute(t_parser *current, t_main_struct *main_struct)
 	ft_exit(126);
 }
 
+static int if_no_heredoc(t_parser *parser)
+{
+	t_parser *current;
+
+	current = parser;
+	while (current)
+	{
+		if (current->redirector->token_enum == TOKEN_HEREDOC)
+			return(0);
+		current = current->next;
+	}
+	return(1);
+} 
 void	arrangement_dup(int **pipes, int pipe_count, t_parser *current,
 		int i)
 {
 	reset_signals();
-	if (i != 0)
+	if (i != 0 && if_no_heredoc(current))
 		dup2(pipes[i - 1][0], 0);
-	if (current->next)
+	if (if_no_heredoc(current) && current->next)
 		dup2(pipes[i][1], 1);
 	close_pipes(pipe_count, pipes);
+}
+
+static int heredoc_count(t_parser *parse_node)
+{
+	int	i;
+	t_redirector *tmp;
+
+	i = 0;
+	tmp = parse_node->redirector;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+static int	heredoc_for_pipe(char *limiter, t_parser *parser,
+		t_main_struct *main_struct, int hd_no_quoted)
+{
+	char	*line;
+	int i;
+	int **pipefd;
+	t_redirector *tmp;
+	
+	pipefd = mem_malloc(sizeof(int *) * heredoc_count(parser));
+	i = 0;
+	while (i < heredoc_count(parser))
+	{
+		pipefd[i] = mem_malloc(sizeof(int) * 2);
+		if (pipe(pipefd[i]) == -1)
+		{
+			return(1);
+		}
+		i++;
+	}
+
+	tmp = parser->redirector;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->token_enum != TOKEN_HEREDOC)
+		{
+			tmp = tmp->next;
+			continue;
+		}
+		while (1)
+		{
+			line = mem_absorb(readline("> "));
+			if (!line)
+				break ;
+			if (!hd_no_quoted)
+				line = heredoc_tokenize_expender(line, *(main_struct->env_struct), main_struct);
+			if (line && ft_strcmp(line, tmp->file) == 0)
+				break ;
+			ft_putendl_fd(line,pipefd[i][1]);
+		}
+		close(pipefd[i][1]);
+		i++;
+		tmp = tmp->next;
+	}
+	return(pipefd[i - 1][0]);
 }
 
 int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
@@ -62,6 +137,12 @@ int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 			arrangement_dup(pipes, pipe_count, current, i);
 			if (current && current->redirector)
 			{
+				if (!if_no_heredoc(current))
+				{
+					current->redirector->herodoc_fd = heredoc_for_pipe(current->redirector->file, current, main_struct, current->redirector->hd_no_expand);
+					if (current->next)
+						dup2(pipes[i][1], 1);
+				}
 				control_redirector = main_redirector(current, control_value);
 				if (control_redirector == -1)
 				{
@@ -114,6 +195,7 @@ void	execute_main(t_parser *parser, t_main_struct *main_struct)
 	int			i;
 	t_parser	*current;
 	int			**pipes;
+
 
 	i = -1;
 	pipe_count = count_cmd(parser) - 1;
