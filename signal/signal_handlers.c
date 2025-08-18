@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:31 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:54:20 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:45:34 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,14 @@ void	handle_sigint_heredoc(int signo)
 	close(STDIN_FILENO);
 	write(STDOUT_FILENO, "\n", 1);
 	ft_exit(130);
+}
+
+void	heredoc_sig_handler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		g_signal = SIGINT;
+		write(STDOUT_FILENO, "\n", 1);
+		close(STDIN_FILENO);
+	}
 }

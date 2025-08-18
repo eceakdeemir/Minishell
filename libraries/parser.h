@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:41:28 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:40:44 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,8 @@ char					*heredoc_control_expender(int start, int end,
 							t_enviroment *env, char *line);
 int						heredoc_fail_clear(t_parser *parser,
 							t_main_struct *main_struct);
+
+// Heredoc sinyal işleyicisi
+void    heredoc_sig_handler(int signo);
 
 #endif

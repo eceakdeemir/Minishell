@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 20:54:02 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:50:21 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
 	exec_or_die(path, cmd, main_struct);
 }
 
-int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
+void	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 {
 	int	cmd_count;
 	int	control_value;
@@ -90,13 +90,13 @@ int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 	if (cmd_count == 1)
 	{
 		if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
-			return (-1);
+			return ;
 		setup_signals(EXECUTING_MODE);
 		control_redirector = main_redirector(parser, control_value);
 		if (control_redirector == -1)
 		{
 			main_struct->last_status = 1;
-			return (-1);
+			return ;
 		}
 		if (parser->built_type >= 0 && parser->built_type <= 6)
 			main_run_built_in(main_struct, parser);
@@ -109,5 +109,4 @@ int	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
 		execute_main(parser, main_struct);
 	}
 	setup_signals(INTERACTIVE_MODE);
-	return (0);
 }

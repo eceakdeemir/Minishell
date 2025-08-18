@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:26 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 21:02:40 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/18 14:34:40 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	redirector_funct(t_parser *parser)
 		else if (redirector_tmp->token_enum == TOKEN_INPUT)
 			return_value = input(redirector_tmp);
 		else if (redirector_tmp->token_enum == TOKEN_HEREDOC)
-			last_in_fd = parser->redirector->herodoc_fd;
+			last_in_fd = redirector_tmp->herodoc_fd;
 		if (return_value == -1)
 			return (-1);
 		redirector_tmp = redirector_tmp->next;
