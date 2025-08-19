@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 11:54:47 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/19 14:13:27 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,37 @@ static int	heredoc_count(t_parser *parse_node)
 	return (i);
 }
 
+static void	main_heredoc_child_process(char *limiter, t_enviroment *env,
+		t_main_struct *main_struct, int hd_no_expand, int pipefd)
+{
+	char	*line;
+	char	*orig;
+
+	setup_signals(HEREDOC_MODE);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			break ;
+		}
+		line = mem_absorb(line);
+		if (ft_strcmp(line, limiter) == 0)
+			break ;
+		if (!hd_no_expand)
+		{
+			orig = line;
+			line = heredoc_tokenize_expender(orig, *(main_struct->env_struct),
+					main_struct);
+		}
+		write(pipefd, line, ft_strlen(line));
+		write(pipefd, "\n", 1);
+	}
+	close(pipefd);
+	ft_exit(0);
+}
+
 static int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 {
 	int		fd[2];
@@ -137,35 +168,8 @@ static int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 	}
 	if (pid == 0)
 	{
-		/* CHILD */
-		set_sig(SIGINT, SIG_DFL);
-		set_sig(SIGQUIT, SIG_IGN);
-		close(fd[0]);
-		delimiter_hit = 0;
-		while (1)
-		{
-			line = readline("> ");
-			if (!line) /* Ctrl+D (EOF) */
-			{
-				/* Bash benzeri: newline yoksa ekle */
-				write(STDOUT_FILENO, "\n", 1);
-				break ;
-			}
-			if (ft_strcmp(line, r->file) == 0)
-			{
-				delimiter_hit = 1;
-				free(line);
-				break ;
-			}
-			if (!r->hd_no_expand)
-				line = heredoc_tokenize_expender(line,
-						*(main_struct->env_struct), main_struct);
-			write(fd[1], line, ft_strlen(line));
-			write(fd[1], "\n", 1);
-			free(line);
-		}
-		close(fd[1]);
-		ft_exit(0);
+		main_heredoc_child_process(r->file, *(main_struct->env_struct),
+			main_struct, r->hd_no_expand, fd[1]);
 	}
 	/* PARENT */
 	close(fd[1]);
@@ -177,20 +181,21 @@ static int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 		return (-1);
 	}
 	restore_interactive_mode();
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		write(STDOUT_FILENO, "\n", 1); /* Ctrl+C heredoc: prompt hizalansın */
-		close(fd[0]);
-		main_struct->last_status = 130;
-		g_signal = SIGINT;
-		return (-2);
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-	{
-		close(fd[0]);
-		return (-1);
-	}
-	return (fd[0]);
+    if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+        || (WIFEXITED(status) && WEXITSTATUS(status) == 130))
+    {
+        close(fd[0]);
+        main_struct->last_status = 130;
+        g_signal = SIGINT;
+        return (-2);
+    }
+    if (WIFEXITED(status)
+        && WEXITSTATUS(status) != 0 && WEXITSTATUS(status) != 130)
+    {
+        close(fd[0]);
+        return (-1);
+    }
+    return (fd[0]);
 }
 static int	prepare_all_heredocs(t_parser *parser, t_main_struct *main_struct)
 {
@@ -300,7 +305,7 @@ void	wait_all_child(int i, int status, t_main_struct *main_struct,
 		else if (pid < 0)
 		{
 			if (errno == EINTR)
-				continue;   
+				continue ;
 			if (errno == ECHILD)
 				break ;
 			perror("waitpid");
