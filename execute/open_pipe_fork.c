@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 17:10:40 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:36:08 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,14 @@ static void	main_heredoc_child_process(char *limiter, t_enviroment *env,
 			break ;
 		}
 		line = mem_absorb(line);
-		if (ft_strcmp(line, limiter) == 0)
-			break ;
 		if (!hd_no_expand)
 		{
 			orig = line;
 			line = heredoc_tokenize_expender(orig, *(main_struct->env_struct),
 					main_struct);
 		}
+		if (ft_strcmp(line, limiter) == 0)
+			break ;
 		write_for_main_heredoc_child_process(pipefd, line);
 	}
 	close(pipefd);
@@ -213,6 +213,7 @@ static int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 		return (return_parent);
 	return (fd[0]);
 }
+
 static int	prepare_all_heredocs(t_parser *parser, t_main_struct *main_struct)
 {
 	t_parser		*cur;
@@ -240,7 +241,6 @@ static int	prepare_all_heredocs(t_parser *parser, t_main_struct *main_struct)
 	}
 	return (0);
 }
-
 
 
 int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,

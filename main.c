@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 16:05:52 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 19:32:33 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static void	process_line(char *line, t_main_struct *main)
 	if (!lexer_head || !*lexer_head)
 		return ;
 	parser_head = parser_funct(lexer_head, main->env_struct, main);
-	compact_all_commands(parser_head);
+	// compact_all_commands(parser_head);
+	// debug_print_parser(parser_head);
 	if (!parser_head)
 		return ;
 	if (!parser_head->args || !parser_head->args[0])

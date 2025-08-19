@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:32 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/18 14:31:53 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:49:13 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,8 @@ void	create_pipes(int pipe_count, int **pipes)
 			ft_exit(1);
 		}
 		i++;
-	}
-	
+	}	
 }
-
 
 void	close_pipes(int pipe_count, int **pipes)
 {
