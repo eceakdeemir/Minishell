@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 14:13:27 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/19 14:24:52 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	path_found_and_execute(t_parser *current, t_main_struct *main_struct)
 	char	*path;
 	char	**temporary_execve_env;
 
+	if (!current->args || !current->args[0])
+		ft_exit(0); 
 	path = find_path(current->args[0], main_struct);
 	if (!path)
 	{
@@ -254,6 +256,12 @@ int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 				if (control_redirector == -1)
 					ft_exit(1);
 			}
+			if (!current->args || !current->args[0])
+			{
+				if (pipe_count > 0)
+					ft_exit(2);
+				ft_exit(0);
+			}
 			if (current->built_type >= 0 && current->built_type <= 6)
 				ft_exit(run_built_in(current, main_struct));
 			else
@@ -264,7 +272,6 @@ int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 			perror("fork");
 			return (1);
 		}
-		/* Parent heredoc fd kapat */
 		r = current->redirector;
 		while (r)
 		{
