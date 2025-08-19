@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/18 17:50:21 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:47:38 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ int	main_redirector(t_parser *parser, int control_value)
 	return (0);
 }
 
+void	this_is_not_built_in_fork(char **cmd, t_main_struct *main_struct,
+	t_parser *parser, pid_t pid)
+{
+	if (pid == 0)
+	{
+		reset_signals();
+		this_is_not_built_in(cmd, main_struct, parser);
+	}
+	else if (pid < 0)
+	{
+		perror("Fork failed");
+		ft_exit(1);
+	}
+}
+
 void	check_signal_and_built(int control_value, t_main_struct *main_struct,
 		t_parser *parser, char **cmd)
 {
@@ -30,11 +45,7 @@ void	check_signal_and_built(int control_value, t_main_struct *main_struct,
 	int		sig;
 
 	pid = fork();
-	if (pid == 0)
-	{
-		reset_signals();
-		this_is_not_built_in(cmd, main_struct, parser);
-	}
+	this_is_not_built_in_fork(cmd, main_struct, parser, pid);
 	waitpid(pid, &control_value, 0);
 	if (WIFSIGNALED(control_value))
 	{
@@ -78,31 +89,35 @@ void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
 	exec_or_die(path, cmd, main_struct);
 }
 
-void	execute(char **cmd, t_main_struct *main_struct, t_parser *parser)
+void	prepare_execute_for_one_cmd(t_parser *parser,
+	t_main_struct *main_struct)
+{
+	if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
+		return ;
+	setup_signals(EXECUTING_MODE);
+	if (main_redirector(parser, 0) == -1)
+	{
+		main_struct->last_status = 1;
+		return ;
+	}
+	if (parser->built_type >= 0 && parser->built_type <= 6)
+		main_run_built_in(main_struct, parser);
+	else
+		check_signal_and_built(0, main_struct, parser, parser->args);
+}
+
+void	prepare_execute(char **cmd, t_main_struct *main_struct,
+	t_parser *parser)
 {
 	int	cmd_count;
 	int	control_value;
 	int	control_redirector;
-	
+
 	g_signal = 0;
 	control_value = 0;
 	cmd_count = count_cmd(parser);
 	if (cmd_count == 1)
-	{
-		if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
-			return ;
-		setup_signals(EXECUTING_MODE);
-		control_redirector = main_redirector(parser, control_value);
-		if (control_redirector == -1)
-		{
-			main_struct->last_status = 1;
-			return ;
-		}
-		if (parser->built_type >= 0 && parser->built_type <= 6)
-			main_run_built_in(main_struct, parser);
-		else
-			check_signal_and_built(control_value, main_struct, parser, cmd);
-	}
+		prepare_execute_for_one_cmd(parser, main_struct);
 	else
 	{
 		setup_signals(EXECUTING_MODE);

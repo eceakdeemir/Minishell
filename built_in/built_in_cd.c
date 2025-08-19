@@ -6,16 +6,17 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:30:07 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 15:25:58 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:43:27 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-
 static int	arg_count(char **args)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (args && args[i])
 		i++;
 	return (i);
@@ -53,6 +54,7 @@ void	update_cd_env(t_enviroment **env, char *old_pwd)
 	if (getcwd(cwd, sizeof(cwd)))
 		update_env_value("PWD", cwd, env);
 }
+
 int	built_in_cd(t_parser *parser, t_enviroment **env)
 {
 	char	*old_pwd;

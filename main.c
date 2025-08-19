@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 20:53:28 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:05:52 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static void	process_line(char *line, t_main_struct *main)
 	parser_head = parser_funct(lexer_head, main->env_struct, main);
 	compact_all_commands(parser_head);
 	if (!parser_head)
-	return ;
+		return ;
 	if (!parser_head->args || !parser_head->args[0])
-	handle_no_command(parser_head, main);
+		handle_no_command(parser_head, main);
 	else
 	{
 		add_built_in_token(&parser_head);
-		execute(parser_head->args, main, parser_head);
+		prepare_execute(parser_head->args, main, parser_head);
 	}
 }
 
