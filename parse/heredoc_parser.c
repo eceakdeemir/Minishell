@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 13:42:48 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:45:38 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 12:04:12 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	heredoc_fail_clear(t_parser *parser, t_main_struct *main_struct)
 {
 	t_redirector	*redirector;
 
-	if (g_signal == SIGINT)
+	if (g_signal == 0)
 		main_struct->last_status = 130;
 	else
 		main_struct->last_status = 1;
