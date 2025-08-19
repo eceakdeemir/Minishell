@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:53 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 16:38:29 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:35:19 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_lexer	**lexer(char *line)
 		while (ft_isspace(line[i]) == 1)
 			i++;
 		if (((line[i] == '<' && line[i + 1] == '<') || (line[i] == '>' && line[i
-					+ 1] == '>')) && line[i + 1])
+				+ 1] == '>')) && line[i + 1])
 		{
 			tokenize_heredoc_and_append(head, line, &i);
 			continue ;

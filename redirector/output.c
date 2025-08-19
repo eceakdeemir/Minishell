@@ -6,7 +6,7 @@
 /*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:22 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/17 16:27:48 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/19 20:35:58 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	output(t_redirector *redirector_tmp)
 {
 	int	fd;
-	
+
 	fd = open(redirector_tmp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{

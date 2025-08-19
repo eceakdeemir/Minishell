@@ -6,7 +6,7 @@
 /*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 19:36:08 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/19 20:26:17 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,28 +113,32 @@ void	write_for_main_heredoc_child_process(int pipefd, char *line)
 	write(pipefd, "\n", 1);
 }
 
+static char	*process_heredoc_line(char *line, int hd_no_expand,
+		t_main_struct *main_struct)
+{
+	char	*orig;
+
+	if (!hd_no_expand)
+	{
+		orig = line;
+		line = heredoc_tokenize_expender(orig, *(main_struct->env_struct),
+				main_struct);
+	}
+	return (line);
+}
+
 static void	main_heredoc_child_process(char *limiter, t_enviroment *env,
 		t_main_struct *main_struct, int hd_no_expand, int pipefd)
 {
 	char	*line;
-	char	*orig;
 
 	setup_signals(HEREDOC_MODE);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
-		{
-			write(STDOUT_FILENO, "\n", 1);
 			break ;
-		}
-		line = mem_absorb(line);
-		if (!hd_no_expand)
-		{
-			orig = line;
-			line = heredoc_tokenize_expender(orig, *(main_struct->env_struct),
-					main_struct);
-		}
+		line = process_heredoc_line(line, hd_no_expand, main_struct);
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		write_for_main_heredoc_child_process(pipefd, line);
@@ -243,14 +247,52 @@ static int	prepare_all_heredocs(t_parser *parser, t_main_struct *main_struct)
 }
 
 
+static void	handle_child_process(t_parser *current, int **pipes, int pipe_count,
+		t_main_struct *main_struct, int i)
+{
+	int	control_redirector;
+
+	arrangement_dup(pipes, pipe_count, current, i);
+	if (current->redirector)
+	{
+		control_redirector = main_redirector(current, 0);
+		if (control_redirector == -1)
+			ft_exit(1);
+	}
+	if (!current->args || !current->args[0])
+	{
+		if (pipe_count > 0)
+			ft_exit(2);
+		ft_exit(0);
+	}
+	if (current->built_type >= 0 && current->built_type <= 6)
+		ft_exit(run_built_in(current, main_struct));
+	else
+		path_found_and_execute(current, main_struct);
+}
+
+static void	close_heredoc_fds(t_parser *current)
+{
+	t_redirector	*r;
+
+	r = current->redirector;
+	while (r)
+	{
+		if (r->token_enum == TOKEN_HEREDOC && r->herodoc_fd >= 0)
+		{
+			close(r->herodoc_fd);
+			r->herodoc_fd = -1;
+		}
+		r = r->next;
+	}
+}
+
 int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 		t_main_struct *main_struct)
 {
 	t_parser		*current;
 	pid_t			pid;
 	int				i;
-	int				control_redirector;
-	t_redirector	*r;
 	int				prep;
 
 	prep = prepare_all_heredocs(parser, main_struct);
@@ -264,40 +306,13 @@ int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			arrangement_dup(pipes, pipe_count, current, i);
-			if (current->redirector)
-			{
-				control_redirector = main_redirector(current, 0);
-				if (control_redirector == -1)
-					ft_exit(1);
-			}
-			if (!current->args || !current->args[0])
-			{
-				if (pipe_count > 0)
-					ft_exit(2);
-				ft_exit(0);
-			}
-			if (current->built_type >= 0 && current->built_type <= 6)
-				ft_exit(run_built_in(current, main_struct));
-			else
-				path_found_and_execute(current, main_struct);
-		}
+			handle_child_process(current, pipes, pipe_count, main_struct, i);
 		else if (pid < 0)
 		{
 			perror("fork");
 			return (1);
 		}
-		r = current->redirector;
-		while (r)
-		{
-			if (r->token_enum == TOKEN_HEREDOC && r->herodoc_fd >= 0)
-			{
-				close(r->herodoc_fd);
-				r->herodoc_fd = -1;
-			}
-			r = r->next;
-		}
+		close_heredoc_fds(current);
 		if (!current->next)
 			main_struct->last_child_pid = pid;
 		current = current->next;
@@ -306,51 +321,98 @@ int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
 	return (0);
 }
 
+static void	handle_wait_result(pid_t pid, int status, t_main_struct *main_struct,
+		t_wait_ctx *ctx, int *i)
+{
+	if (pid > 0)
+	{
+		(*i)--;
+		is_there_signal_at_child(pid, status, main_struct, ctx);
+	}
+	else if (pid < 0)
+	{
+		if (errno == EINTR)
+			return ;
+		if (errno == ECHILD)
+			*i = 0;
+		else
+		{
+			perror("waitpid");
+			*i = 0;
+		}
+	}
+}
+
+static void	finalize_wait_status(t_wait_ctx *ctx, t_main_struct *main_struct)
+{
+	int	saw_sigint_newline;
+
+	saw_sigint_newline = 0;
+	if (ctx->saw_sigint)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		saw_sigint_newline = 1;
+	}
+	if (ctx->saw_sigint && !ctx->set_last)
+		main_struct->last_status = 130;
+	g_signal = 0;
+	(void)saw_sigint_newline;
+}
+
 void	wait_all_child(int i, int status, t_main_struct *main_struct,
 		t_parser *parser)
 {
 	pid_t		pid;
 	t_wait_ctx	ctx;
-	int			saw_sigint_newline;
 
 	ctx.saw_sigint = 0;
 	ctx.set_last = 0;
-	saw_sigint_newline = 0;
 	i = count_cmd(parser);
 	while (i > 0)
 	{
 		pid = waitpid(-1, &status, 0);
-		if (pid > 0)
-		{
-			i--;
-			is_there_signal_at_child(pid, status, main_struct, &ctx);
-		}
-		else if (pid < 0)
-		{
-			if (errno == EINTR)
-				continue ;
-			if (errno == ECHILD)
-				break ;
-			perror("waitpid");
-			break ;
-		}
+		handle_wait_result(pid, status, main_struct, &ctx, &i);
 	}
-	if (ctx.saw_sigint)
+	finalize_wait_status(&ctx, main_struct);
+}
+
+static int	**create_pipes(int pipe_count)
+{
+	int	**pipes;
+	int	i;
+
+	if (pipe_count <= 0)
+		return (NULL);
+	pipes = mem_malloc(sizeof(int *) * pipe_count);
+	for (i = 0; i < pipe_count; i++)
 	{
-		write(STDOUT_FILENO, "\n", 1);
-		saw_sigint_newline = 1;
+		pipes[i] = mem_malloc(sizeof(int) * 2);
+		if (pipe(pipes[i]) == -1)
+		{
+			perror("pipe");
+			return (NULL);
+		}
 	}
-	if (ctx.saw_sigint && !ctx.set_last)
-		main_struct->last_status = 130;
-	g_signal = 0;
-	(void)saw_sigint_newline;
+	return (pipes);
+}
+
+static void	close_all_pipes(int **pipes, int pipe_count)
+{
+	int	i;
+
+	if (!pipes)
+		return ;
+	for (i = 0; i < pipe_count; i++)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+	}
 }
 
 void	execute_main(t_parser *parser, t_main_struct *main_struct)
 {
 	int	pipe_count;
 	int	status;
-	int	i;
 	int	**pipes;
 	int	fres;
 
@@ -359,38 +421,16 @@ void	execute_main(t_parser *parser, t_main_struct *main_struct)
 	pipe_count = count_cmd(parser) - 1;
 	if (pipe_count < 0)
 		pipe_count = 0;
-	pipes = NULL;
-	if (pipe_count > 0)
-	{
-		pipes = mem_malloc(sizeof(int *) * pipe_count);
-		for (i = 0; i < pipe_count; i++)
-		{
-			pipes[i] = mem_malloc(sizeof(int) * 2);
-			if (pipe(pipes[i]) == -1)
-				return (perror("pipe"));
-		}
-	}
+	pipes = create_pipes(pipe_count);
+	if (pipe_count > 0 && !pipes)
+		return ;
 	fres = forks_and_exec_commands(parser, pipes, pipe_count, main_struct);
 	if (fres == 130)
 	{
-		if (pipes)
-		{
-			for (i = 0; i < pipe_count; i++)
-			{
-				close(pipes[i][0]);
-				close(pipes[i][1]);
-			}
-		}
+		close_all_pipes(pipes, pipe_count);
 		main_struct->last_status = 130;
 		return ;
 	}
-	if (pipes)
-	{
-		for (i = 0; i < pipe_count; i++)
-		{
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-		}
-	}
+	close_all_pipes(pipes, pipe_count);
 	wait_all_child(0, status, main_struct, parser);
 }
