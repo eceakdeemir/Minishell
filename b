@@ -1,3 +1,1 @@
-berat
-nurevşan
-beyza 
+selam naber cano

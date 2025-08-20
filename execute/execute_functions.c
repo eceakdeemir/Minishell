@@ -3,40 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 16:47:38 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:32:58 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
 extern sig_atomic_t	g_signal;
-
-int	main_redirector(t_parser *parser, int control_value)
-{
-	if (parser && parser->redirector)
-		control_value = redirector_funct(parser);
-	if (control_value == -1)
-		return (-1);
-	return (0);
-}
-
-void	this_is_not_built_in_fork(char **cmd, t_main_struct *main_struct,
-	t_parser *parser, pid_t pid)
-{
-	if (pid == 0)
-	{
-		reset_signals();
-		this_is_not_built_in(cmd, main_struct, parser);
-	}
-	else if (pid < 0)
-	{
-		perror("Fork failed");
-		ft_exit(1);
-	}
-}
 
 void	check_signal_and_built(int control_value, t_main_struct *main_struct,
 		t_parser *parser, char **cmd)
@@ -90,7 +66,7 @@ void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
 }
 
 void	prepare_execute_for_one_cmd(t_parser *parser,
-	t_main_struct *main_struct)
+		t_main_struct *main_struct)
 {
 	if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
 		return ;
@@ -107,7 +83,7 @@ void	prepare_execute_for_one_cmd(t_parser *parser,
 }
 
 void	prepare_execute(char **cmd, t_main_struct *main_struct,
-	t_parser *parser)
+		t_parser *parser)
 {
 	int	cmd_count;
 	int	control_value;

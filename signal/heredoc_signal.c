@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   heredoc_signal.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 16:37:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 18:35:41 by igurses          ###   ########.fr       */
+/*   Created: 2025/08/20 18:36:11 by igurses           #+#    #+#             */
+/*   Updated: 2025/08/20 18:50:51 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-sig_atomic_t	g_signal = 0;
-
-void	setup_signals(int context)
+void	set_sig(int sig, void (*h)(int))
 {
-	if (context == INTERACTIVE_MODE)
-		setup_signals_interactive();
-	else if (context == EXECUTING_MODE)
-		setup_signals_executing();
-	else if (context == HEREDOC_MODE)
-		setup_signals_heredoc();
+	struct sigaction	sa;
+
+	sa.sa_handler = h;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(sig, &sa, NULL);
+}
+
+void	enter_heredoc_parent_mode(void)
+{
+	set_sig(SIGINT, SIG_IGN);
+	set_sig(SIGQUIT, SIG_IGN);
+}
+
+void	restore_interactive_mode(void)
+{
+	set_sig(SIGINT, handle_sigint_interactive);
+	set_sig(SIGQUIT, SIG_IGN);
 }

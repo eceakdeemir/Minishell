@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/18 17:40:44 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 21:20:25 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_main_struct
 	t_enviroment		**env_struct;
 	char				**env;
 	int					last_status;
+	int					i_for_tokenize;
 	pid_t				last_child_pid;
 }						t_main_struct;
 
@@ -124,8 +125,22 @@ char					*heredoc_control_expender(int start, int end,
 							t_enviroment *env, char *line);
 int						heredoc_fail_clear(t_parser *parser,
 							t_main_struct *main_struct);
+int						is_redir(t_token_enum token);
+t_lexer					**split_and_add(t_lexer *node);
+t_lexer					*export_last_func(t_lexer **head);
+int						has_it_space(char *str);
+void					helper_tokenize_char(int start,
+							t_main_struct *main_struct, t_lexer *tmp);
+void					helper_for_query(t_main_struct *main_struct,
+							t_lexer *tmp, char *return_val);
+void					helper_for_space(t_lexer *export_last,
+							t_lexer **export_head, t_lexer **head,
+							t_lexer *tmp);
 
+void					control_start(t_main_struct *main_struct, int start);
+void					control_link_list(t_lexer *tmp_prev, t_lexer **head,
+							t_lexer **export_head);
 // Heredoc sinyal işleyicisi
-void    heredoc_sig_handler(int signo);
+void					heredoc_sig_handler(int signo);
 
 #endif

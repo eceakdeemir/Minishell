@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:47 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:27:14 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:34:57 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,10 @@ int	has_slash(const char *str)
 		i++;
 	}
 	return (0);
+}
+
+int	is_redir(t_token_enum token)
+{
+	return (token == TOKEN_INPUT || token == TOKEN_OUTPUT
+		|| token == TOKEN_HEREDOC || token == TOKEN_APPEND);
 }

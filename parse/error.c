@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:47 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 14:38:26 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:34:35 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
-
-static int	is_redir(t_token_enum token)
-{
-	return (token == TOKEN_INPUT || token == TOKEN_OUTPUT
-		|| token == TOKEN_HEREDOC || token == TOKEN_APPEND);
-}
 
 static char	*lexeme(t_lexer *lexer)
 {

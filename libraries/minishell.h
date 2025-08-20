@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:44:46 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 19:40:28 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 
 extern sig_atomic_t	g_signal;
 
-
 int					redirector_funct(t_parser *parser);
 
 int					append(t_redirector *redirector);
@@ -57,6 +56,9 @@ void				handle_sigint_interactive(int signo);
 void				handle_sigint_executing(int signo);
 void				handle_sigquit_executing(int signo);
 void				handle_sigint_heredoc(int signo);
+void				set_sig(int sig, void (*h)(int));
+void				enter_heredoc_parent_mode(void);
+void				restore_interactive_mode(void);
 
 void				compact_args(char **args);
 void				compact_all_commands(t_parser *head);
@@ -67,13 +69,7 @@ char				*control_path(char **cmd, t_main_struct *main_struct);
 void				is_acces_path(char *path);
 void				exec_or_die(const char *path, char **argv,
 						t_main_struct *main_struct);
-char	*heredoc_tokenize_expender(char *line,
-		t_main_struct *main_struct);
-
-
-typedef struct s_expender_params {
-	t_enviroment	*env;
-	t_main_struct	*main_struct;
-}	t_expender_params;
+char				*heredoc_tokenize_expender(char *line,
+						t_main_struct *main_struct);
 
 #endif
