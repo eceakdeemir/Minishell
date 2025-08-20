@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 20:26:17 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/20 14:18:19 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static char	*process_heredoc_line(char *line, int hd_no_expand,
 	return (line);
 }
 
-static void	main_heredoc_child_process(char *limiter, t_enviroment *env,
+static void	main_heredoc_child_process(char *limiter,
 		t_main_struct *main_struct, int hd_no_expand, int pipefd)
 {
 	char	*line;
@@ -160,8 +160,8 @@ int	open_one_heredoc_child(pid_t pid, t_redirector *r,
 	}
 	if (pid == 0)
 	{
-		main_heredoc_child_process(r->file, *(main_struct->env_struct),
-			main_struct, r->hd_no_expand, fd[1]);
+		main_heredoc_child_process(r->file, main_struct, r->hd_no_expand,
+			fd[1]);
 	}
 	return (0);
 }
@@ -200,8 +200,6 @@ static int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 	int		fd[2];
 	pid_t	pid;
 	int		status;
-	char	*line;
-	int		delimiter_hit;
 	int		return_parent;
 	int		return_child;
 
@@ -246,13 +244,11 @@ static int	prepare_all_heredocs(t_parser *parser, t_main_struct *main_struct)
 	return (0);
 }
 
-
-static void	handle_child_process(t_parser *current, int **pipes, int pipe_count,
+static void	handle_child_process(t_parser *current, int pipe_count,
 		t_main_struct *main_struct, int i)
 {
 	int	control_redirector;
 
-	arrangement_dup(pipes, pipe_count, current, i);
 	if (current->redirector)
 	{
 		control_redirector = main_redirector(current, 0);
@@ -287,49 +283,65 @@ static void	close_heredoc_fds(t_parser *current)
 	}
 }
 
-int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
-		t_main_struct *main_struct)
+int	prep_control(t_parser *parser, t_main_struct *main_struct)
 {
-	t_parser		*current;
-	pid_t			pid;
-	int				i;
-	int				prep;
+	int	prep;
 
 	prep = prepare_all_heredocs(parser, main_struct);
-	if (prep == 130) /* heredoc Ctrl+C */
+	if (prep == 130)
 		return (130);
 	if (prep < 0)
 		return (1);
+	return (0);
+}
+
+void	child_pid_control(t_main_struct *main_struct, pid_t pid,
+		t_parser *current)
+{
+	if (!current->next)
+		main_struct->last_child_pid = pid;
+}
+
+void	close_fd_and_child_control(t_parser *current, pid_t pid,
+		t_main_struct *main_struct)
+{
+	close_heredoc_fds(current);
+	child_pid_control(main_struct, pid, current);
+}
+
+int	forks_and_exec_commands(t_parser *parser, int **pipes, int pipe_count,
+		t_main_struct *main_struct)
+{
+	t_parser	*current;
+	pid_t		pid;
+	int			i;
+	int			prep;
+
+	prep = prep_control(parser, main_struct);
 	current = parser;
 	i = 0;
+	if (prep == 130 || prep == 1)
+		return (prep);
 	while (current)
 	{
 		pid = fork();
 		if (pid == 0)
-			handle_child_process(current, pipes, pipe_count, main_struct, i);
-		else if (pid < 0)
 		{
-			perror("fork");
-			return (1);
+			arrangement_dup(pipes, pipe_count, current, i);
+			handle_child_process(current, pipe_count, main_struct, i);
 		}
-		close_heredoc_fds(current);
-		if (!current->next)
-			main_struct->last_child_pid = pid;
+		else if (pid < 0)
+			return (perror("fork"), 1);
+		close_fd_and_child_control(current, pid, main_struct);
 		current = current->next;
 		i++;
 	}
 	return (0);
 }
 
-static void	handle_wait_result(pid_t pid, int status, t_main_struct *main_struct,
-		t_wait_ctx *ctx, int *i)
+static void	handle_wait_result(pid_t pid, int *i)
 {
-	if (pid > 0)
-	{
-		(*i)--;
-		is_there_signal_at_child(pid, status, main_struct, ctx);
-	}
-	else if (pid < 0)
+	if (pid < 0)
 	{
 		if (errno == EINTR)
 			return ;
@@ -371,7 +383,12 @@ void	wait_all_child(int i, int status, t_main_struct *main_struct,
 	while (i > 0)
 	{
 		pid = waitpid(-1, &status, 0);
-		handle_wait_result(pid, status, main_struct, &ctx, &i);
+		if (pid > 0)
+		{
+			i--;
+			is_there_signal_at_child(pid, status, main_struct, &ctx);
+		}
+		handle_wait_result(pid, &i);
 	}
 	finalize_wait_status(&ctx, main_struct);
 }
@@ -381,10 +398,11 @@ static int	**create_pipes(int pipe_count)
 	int	**pipes;
 	int	i;
 
+	i = 0;
 	if (pipe_count <= 0)
 		return (NULL);
 	pipes = mem_malloc(sizeof(int *) * pipe_count);
-	for (i = 0; i < pipe_count; i++)
+	while (i < pipe_count)
 	{
 		pipes[i] = mem_malloc(sizeof(int) * 2);
 		if (pipe(pipes[i]) == -1)
@@ -392,6 +410,7 @@ static int	**create_pipes(int pipe_count)
 			perror("pipe");
 			return (NULL);
 		}
+		i++;
 	}
 	return (pipes);
 }
@@ -400,12 +419,14 @@ static void	close_all_pipes(int **pipes, int pipe_count)
 {
 	int	i;
 
+	i = 0;
 	if (!pipes)
 		return ;
-	for (i = 0; i < pipe_count; i++)
+	while (i < pipe_count)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
+		i++;
 	}
 }
 
