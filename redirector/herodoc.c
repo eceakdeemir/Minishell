@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herodoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 19:25:36 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:27:18 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,61 @@
 
 extern sig_atomic_t	g_signal;
 
-char	*heredoc_tokenize_expender(char *line, t_enviroment *env,
-		t_main_struct *main_struct)
+int	isalnum_heredoc(char *line, int i)
 {
-	int		i;
-	int		start;
-	char	*return_val;
+	while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'))
+		i++;
+	return (i);
+}
 
-	i = 0;
-	if (!line)
-		return (NULL);
+int	heredoc_tokenize_expender_while(char *line, t_main_struct *main_struct,
+		int i, int start)
+{
 	while (line[i])
 	{
 		if (line[i] == '$')
 		{
 			if (line[i + 1] == 0)
-				return (NULL);
+				return (0);
 			if (line[i + 1] == '?')
 			{
-				return_val = ft_itoa(main_struct->last_status);
-				line = heredoc_combine_expender(line, i, i + 2, return_val);
+				line = heredoc_combine_expender(line, i, i + 2,
+						ft_itoa(main_struct->last_status));
 				i = 0;
 				continue ;
 			}
 			start = i;
 			i++;
-			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'))
-				i++;
-			line = heredoc_control_expender(start, i, env, line);
+			i = isalnum_heredoc(line, i);
+			line = heredoc_control_expender(start, i, *main_struct->env_struct,
+					line);
 			if (i - 1 != start)
 				i = 0;
 		}
 		else
 			i++;
 	}
+	return (1);
+}
+
+char	*heredoc_tokenize_expender(char *line, t_main_struct *main_struct)
+{
+	int	i;
+	int	start;
+	int	while_return_control;
+
+	i = 0;
+	if (!line)
+		return (NULL);
+	while_return_control = heredoc_tokenize_expender_while(line, main_struct, i,
+			start);
+	if (while_return_control == 0)
+		return (NULL);
 	return (line);
 }
 
-static void	heredoc_child_process(char *limiter, t_enviroment *env,
-		t_main_struct *main_struct, int hd_no_quoted, int write_fd)
+static void	heredoc_child_process(char *limiter, t_main_struct *main_struct,
+		int hd_no_quoted, int write_fd)
 {
 	char	*line;
 
@@ -63,11 +79,9 @@ static void	heredoc_child_process(char *limiter, t_enviroment *env,
 		if (!line)
 			break ;
 		if (!hd_no_quoted)
-			line = heredoc_tokenize_expender(line, env, main_struct);
+			line = heredoc_tokenize_expender(line, main_struct);
 		if (line && ft_strcmp(line, limiter) == 0)
-		{
 			break ;
-		}
 		ft_putendl_fd(line, write_fd);
 	}
 	close(write_fd);
@@ -117,13 +131,10 @@ static int	create_heredoc_file(char *limiter, t_enviroment *env,
 	if (pid == 0)
 	{
 		close(pipefd[0]);
-		heredoc_child_process(limiter, env, main_struct, hd_no_quoted,
-			pipefd[1]);
+		heredoc_child_process(limiter, main_struct, hd_no_quoted, pipefd[1]);
 	}
 	if (wait_child_for_heredoc(pid, pipefd, main_struct) == -1)
-	{
 		return (-1);
-	}
 	return (pipefd[0]);
 }
 

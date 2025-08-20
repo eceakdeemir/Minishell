@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 14:18:19 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:44:59 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static char	*process_heredoc_line(char *line, int hd_no_expand,
 	if (!hd_no_expand)
 	{
 		orig = line;
-		line = heredoc_tokenize_expender(orig, *(main_struct->env_struct),
+		line = heredoc_tokenize_expender(orig,
 				main_struct);
 	}
 	return (line);

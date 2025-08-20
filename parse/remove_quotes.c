@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 14:59:06 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:48:12 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ char	*remove_quotes(char *word)
 			result[j++] = word[i++];
 	}
 	result[j] = '\0';
-	printf("remove_quotes: %s\n", result);
 	return (result);
 }
 

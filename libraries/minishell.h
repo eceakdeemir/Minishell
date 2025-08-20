@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/18 17:44:29 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:44:46 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char				*control_path(char **cmd, t_main_struct *main_struct);
 void				is_acces_path(char *path);
 void				exec_or_die(const char *path, char **argv,
 						t_main_struct *main_struct);
-char	*heredoc_tokenize_expender(char *line, t_enviroment *env,
+char	*heredoc_tokenize_expender(char *line,
 		t_main_struct *main_struct);
 
 
