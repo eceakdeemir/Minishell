@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:19 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 18:59:00 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:10:15 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_wait_result(pid_t pid, int *i);
 int		heredoc_count(t_parser *parse_node);
 void	close_heredoc_fds(t_parser *current);
 
-char	*process_heredoc_line(char *line, int hd_no_expand,
+void	process_heredoc_line(char **line, int hd_no_expand,
 			t_main_struct *main_struct);
 int		open_one_heredoc(t_redirector *r, t_main_struct *main_struct);
 void	main_heredoc_child_process(char *limiter, t_main_struct *main_struct,

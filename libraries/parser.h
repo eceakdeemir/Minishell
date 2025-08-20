@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 21:20:25 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:05:21 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ int						check_pipe_error(t_lexer *lexer);
 
 int						is_has_quote(const char *s);
 void					decide_heredoc_quoted(t_lexer *head);
-char					*heredoc_combine_expender(char *line, int start,
+void					heredoc_combine_expender(char **line, int start,
 							int end, char *control_value);
-char					*heredoc_control_expender(int start, int end,
-							t_enviroment *env, char *line);
+void					heredoc_control_expender(int start, int end,
+							t_enviroment *env, char **line);
 int						heredoc_fail_clear(t_parser *parser,
 							t_main_struct *main_struct);
 int						is_redir(t_token_enum token);

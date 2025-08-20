@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:45:03 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/20 18:45:56 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:11:24 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,11 @@ int	open_one_heredoc(t_redirector *r, t_main_struct *main_struct)
 	return (fd[0]);
 }
 
-char	*process_heredoc_line(char *line, int hd_no_expand,
+void	process_heredoc_line(char **line, int hd_no_expand,
 		t_main_struct *main_struct)
 {
-	char	*orig;
-
 	if (!hd_no_expand)
-	{
-		orig = line;
-		line = heredoc_tokenize_expender(orig, main_struct);
-	}
-	return (line);
+		heredoc_tokenize_expender(line, main_struct);
 }
 
 void	main_heredoc_child_process(char *limiter, t_main_struct *main_struct,
@@ -57,7 +51,7 @@ void	main_heredoc_child_process(char *limiter, t_main_struct *main_struct,
 		line = readline("> ");
 		if (!line)
 			break ;
-		line = process_heredoc_line(line, hd_no_expand, main_struct);
+		process_heredoc_line(&line, hd_no_expand, main_struct);
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		write_for_main_heredoc_child_process(pipefd, line);

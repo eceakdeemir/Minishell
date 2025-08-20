@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 19:40:28 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:09:21 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char				*control_path(char **cmd, t_main_struct *main_struct);
 void				is_acces_path(char *path);
 void				exec_or_die(const char *path, char **argv,
 						t_main_struct *main_struct);
-char				*heredoc_tokenize_expender(char *line,
+void				heredoc_tokenize_expender(char **line,
 						t_main_struct *main_struct);
 
 #endif

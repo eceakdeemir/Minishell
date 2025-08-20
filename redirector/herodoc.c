@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herodoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 21:06:24 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:09:44 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	heredoc_child_process(char *limiter, t_main_struct *main_struct,
 		if (!line)
 			break ;
 		if (!hd_no_quoted)
-			line = heredoc_tokenize_expender(line, main_struct);
+			heredoc_tokenize_expender(&line, main_struct);
 		printf("line: %s\n limiter: %s\n", line, limiter);
 		if (line && ft_strcmp(line, limiter) == 0)
 			break ;
