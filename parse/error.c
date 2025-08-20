@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:47 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:43:41 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 14:38:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,37 +66,43 @@ int	check_redirector_error(t_lexer **lexer)
 	return (0);
 }
 
+int	print_pipe_error(t_lexer *lexer)
+{
+	t_lexer	*temp;
+
+	temp = lexer;
+	if (temp->token_enum == TOKEN_PIPE)
+	{
+		if (!temp->next)
+		{
+			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+			return (1);
+		}
+		if (temp->next->token_enum == TOKEN_PIPE)
+		{
+			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	check_pipe_error(t_lexer *lexer)
 {
 	t_lexer	*temp;
-	int		exit_code;
+	int		return_pipe_error;
 
 	temp = lexer;
-	exit_code = 0;
 	if (temp && (temp->token_enum == TOKEN_PIPE))
 	{
 		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-		exit_code = 2;
 		return (1);
 	}
 	while (temp)
 	{
-		if (temp->token_enum == TOKEN_PIPE)
-		{
-			if (!temp->next)
-			{
-				ft_putstr_fd("syntax error near unexpected token `newline'\n",
-					2);
-				exit_code = 2;
-				return (1);
-			}
-			if (temp->next->token_enum == TOKEN_PIPE)
-			{
-				ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-				exit_code = 2;
-				return (1);
-			}
-		}
+		return_pipe_error = print_pipe_error(temp);
+		if (return_pipe_error)
+			return (1);
 		temp = temp->next;
 	}
 	return (0);
