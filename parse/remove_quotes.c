@@ -6,11 +6,27 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:49:32 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/20 14:59:06 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
+
+void	remove_quotes_single(char *word, int *i, int *j, char *result)
+{
+	while (word[*i] && word[*i] != '\'')
+		result[(*j)++] = word[(*i)++];
+	if (word[*i] == '\'')
+		(*i)++;
+}
+
+void	remove_quotes_double(char *word, int *i, int *j, char *result)
+{
+	while (word[*i] && word[*i] != '\"')
+		result[(*j)++] = word[(*i)++];
+	if (word[*i] == '\"')
+		(*i)++;
+}
 
 char	*remove_quotes(char *word)
 {
@@ -26,23 +42,18 @@ char	*remove_quotes(char *word)
 		if (word[i] == '\'')
 		{
 			i++;
-			while (word[i] && word[i] != '\'')
-				result[j++] = word[i++];
-			if (word[i] == '\'')
-				i++;
+			remove_quotes_single(word, &i, &j, result);
 		}
 		else if (word[i] == '\"')
 		{
 			i++;
-			while (word[i] && word[i] != '\"')
-				result[j++] = word[i++];
-			if (word[i] == '\"')
-				i++;
+			remove_quotes_double(word, &i, &j, result);
 		}
 		else
 			result[j++] = word[i++];
 	}
 	result[j] = '\0';
+	printf("remove_quotes: %s\n", result);
 	return (result);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:53 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 20:35:19 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/20 14:41:34 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	add_new_node_to_list(t_lexer *node, t_lexer **head)
 void	add_word_to_list(int start, int *i, t_lexer **head, char *line)
 {
 	char	quote;
-	int		exit_code;
 
 	while (line[*i] && !ft_isspace(line[*i]) && !ft_strchr("|<>", line[*i]))
 	{
@@ -57,7 +56,6 @@ void	add_word_to_list(int start, int *i, t_lexer **head, char *line)
 			if (line[*i] == '\0')
 			{
 				ft_putendl_fd("syntax error: unclosed quote", 2);
-				exit_code = 2;
 				*head = NULL;
 				return ;
 			}
@@ -84,7 +82,7 @@ t_lexer	**lexer(char *line)
 		while (ft_isspace(line[i]) == 1)
 			i++;
 		if (((line[i] == '<' && line[i + 1] == '<') || (line[i] == '>' && line[i
-				+ 1] == '>')) && line[i + 1])
+			+ 1] == '>')) && line[i + 1])
 		{
 			tokenize_heredoc_and_append(head, line, &i);
 			continue ;
