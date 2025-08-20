@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 00:05:21 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 00:48:07 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,15 @@ int						is_redir(t_token_enum token);
 t_lexer					**split_and_add(t_lexer *node);
 t_lexer					*export_last_func(t_lexer **head);
 int						has_it_space(char *str);
-void					helper_tokenize_char(int start,
-							t_main_struct *main_struct, t_lexer *tmp);
+void					helper_tokenize_char(t_main_struct *main_struct,
+							t_lexer *tmp);
 void					helper_for_query(t_main_struct *main_struct,
-							t_lexer *tmp, char *return_val);
+							t_lexer *tmp);
 void					helper_for_space(t_lexer *export_last,
 							t_lexer **export_head, t_lexer **head,
 							t_lexer *tmp);
 
-void					control_start(t_main_struct *main_struct, int start);
+void					control_start(t_main_struct *main_struct);
 void					control_link_list(t_lexer *tmp_prev, t_lexer **head,
 							t_lexer **export_head);
 // Heredoc sinyal işleyicisi

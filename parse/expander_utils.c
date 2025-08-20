@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 21:19:12 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/20 21:21:26 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:38:48 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-void	helper_tokenize_char(int start, t_main_struct *main_struct,
+void	helper_tokenize_char(t_main_struct *main_struct,
 		t_lexer *tmp)
 {
+	int start;
+
 	start = main_struct->i_for_tokenize;
 	main_struct->i_for_tokenize++;
 	while (tmp->word[main_struct->i_for_tokenize]
@@ -25,9 +27,10 @@ void	helper_tokenize_char(int start, t_main_struct *main_struct,
 		*(main_struct->env_struct), tmp);
 }
 
-void	helper_for_query(t_main_struct *main_struct, t_lexer *tmp,
-		char *return_val)
+void	helper_for_query(t_main_struct *main_struct, t_lexer *tmp)
 {
+	char	*return_val;
+
 	return_val = ft_itoa(main_struct->last_status);
 	combine_expender(tmp, main_struct->i_for_tokenize,
 		main_struct->i_for_tokenize + 2, return_val);
@@ -42,9 +45,9 @@ void	helper_for_space(t_lexer *export_last, t_lexer **export_head,
 	export_last->next = tmp->next;
 }
 
-void	control_start(t_main_struct *main_struct, int start)
+void	control_start(t_main_struct *main_struct)
 {
-	if (main_struct->i_for_tokenize - 1 != start)
+	if ((main_struct->i_for_tokenize - 1) != 0)
 		main_struct->i_for_tokenize = 0;
 }
 

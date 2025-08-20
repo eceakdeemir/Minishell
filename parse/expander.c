@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 21:19:18 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 00:48:16 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,18 @@ static void	control_is_quotes(t_lexer *tmp, t_main_struct *main_struct)
 		main_struct->i_for_tokenize++;
 }
 
+void	helper_for_query_if(t_lexer *tmp, t_main_struct *main_struct)
+{
+	if (tmp->word[main_struct->i_for_tokenize + 1] == '?')
+		helper_for_query(main_struct, tmp);
+}
+
 static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *main_struct,
 		t_lexer **head, t_lexer *tmp_prev)
 {
 	t_lexer	*export_last;
 	t_lexer	**export_head;
-	char	*return_val;
-	int		start;
 
-	return_val = NULL;
-	start = 0;
 	while (tmp->word[main_struct->i_for_tokenize])
 	{
 		if (tmp->word[main_struct->i_for_tokenize] == '\'')
@@ -40,18 +42,16 @@ static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *main_struct,
 		{
 			if (tmp->word[main_struct->i_for_tokenize + 1] == 0)
 				return ;
+			helper_for_query_if(tmp, main_struct);
 			if (tmp->word[main_struct->i_for_tokenize + 1] == '?')
-			{
-				helper_for_query(main_struct, tmp, return_val);
 				continue ;
-			}
-			helper_tokenize_char(start, main_struct, tmp);
+			helper_tokenize_char(main_struct, tmp);
 			if (has_it_space(tmp->word))
 			{
 				helper_for_space(export_last, export_head, head, tmp);
 				control_link_list(tmp_prev, head, export_head);
 			}
-			control_start(main_struct, start);
+			control_start(main_struct);
 		}
 		else
 			main_struct->i_for_tokenize++;
