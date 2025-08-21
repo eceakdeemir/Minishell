@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 21:19:12 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 00:38:48 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 07:50:57 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	helper_for_query(t_main_struct *main_struct, t_lexer *tmp)
 	main_struct->i_for_tokenize = 0;
 }
 
-void	helper_for_space(t_lexer *export_last, t_lexer **export_head,
+void	helper_for_space(t_lexer **export_last, t_lexer ***export_head,
 		t_lexer **head, t_lexer *tmp)
 {
-	export_head = split_and_add(tmp);
-	export_last = export_last_func(export_head);
-	export_last->next = tmp->next;
+	*export_head = split_and_add(tmp);
+	*export_last = export_last_func(*export_head);
+	(*export_last)->next = tmp->next;
 }
 
 void	control_start(t_main_struct *main_struct)
@@ -54,8 +54,15 @@ void	control_start(t_main_struct *main_struct)
 void	control_link_list(t_lexer *tmp_prev, t_lexer **head,
 		t_lexer **export_head)
 {
-	if (tmp_prev == NULL)
+	if (tmp_prev == NULL && *export_head)
+	{
 		*head = *export_head;
+		printf("before control_link_list\n");
+		
+	}
 	else
-		tmp_prev->next = *export_head;
+	{
+			tmp_prev->next = *export_head;
+		
+	}
 }

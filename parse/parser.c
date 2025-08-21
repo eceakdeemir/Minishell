@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:01 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:48:07 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 07:53:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	add_redirector(t_parser *cmd, t_token_enum type, char *file,
 	t_redirector	*new;
 	t_redirector	*current;
 
-	new = mem_malloc(sizeof(t_redirector));
+	new = memory_malloc(sizeof(t_redirector));
 	new->token_enum = type;
 	new->file = ft_strdup(file);
 	new->hd_no_expand = hd_no_expand;
@@ -41,9 +41,9 @@ t_parser	*create_new_parser_node(t_lexer **lexer)
 	t_parser	*cmd;
 	int			count;
 
-	cmd = mem_calloc(1, sizeof(t_parser));
+	cmd = memory_calloc(1, sizeof(t_parser));
 	count = count_args(*lexer);
-	cmd->args = mem_malloc(sizeof(char *) * (count + 1));
+	cmd->args = memory_malloc(sizeof(char *) * (count + 1));
 	if (!cmd->args)
 		return (NULL);
 	cmd->redirector = NULL;

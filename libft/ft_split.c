@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 15:30:54 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 15:28:43 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**ft_split(char const *s, char c)
 	int		string_count;
 
 	string_count = ft_string_count(s, c);
-	str = (char **)mem_malloc(sizeof(char *) * (string_count + 1));
+	str = (char **)memory_malloc(sizeof(char *) * (string_count + 1));
 	if (!str)
 		return (NULL);
 	str[string_count] = NULL;

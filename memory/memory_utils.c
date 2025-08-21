@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_utils.c                                        :+:      :+:    :+:   */
+/*   memory_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 19:21:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:39:11 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:44:58 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libmem.h"
-#include <stdlib.h>
-#include <unistd.h>
+#include "../libraries/minishell.h"
 
-void	*mem_exit(void)
+void	*memory_exit(void)
 {
-	const char	*err = "libmem: Out of memory\n";
+	const char	*error;
+	error = "memory: Out of memory\n";
 	int			i;
 
 	i = -1;
-	while (err[++i])
-		write(STDERR_FILENO, &err[i], 1);
-	mem_free();
+	while (error[++i])
+		write(STDERR_FILENO, &error[i], 1);
+	memory_free();
 	exit(EXIT_FAILURE);
 	return (NULL);
 }
 
-t_mem_block	*mem_add_new_block(void *data, size_t size)
+t_memory_block	*memory_add_new_block(void *data, size_t size)
 {
-	static t_mem_block	*head;
-	t_mem_block			*new;
-	t_mem_block			*node;
+	static t_memory_block	*head;
+	t_memory_block			*new;
+	t_memory_block			*node;
 
-	new = malloc(sizeof(t_mem_block));
+	new = malloc(sizeof(t_memory_block));
 	if (!new)
-		return (mem_exit());
+		return (memory_exit());
 	new->data = data;
 	new->size = size;
 	new->head = &head;
@@ -52,10 +51,10 @@ t_mem_block	*mem_add_new_block(void *data, size_t size)
 	return (new);
 }
 
-void	mem_clear_block(t_mem_block **head)
+void	memory_clear_block(t_memory_block **head)
 {
-	t_mem_block	*temp;
-	t_mem_block	*node;
+	t_memory_block	*temp;
+	t_memory_block	*node;
 
 	if (!(*head))
 		return ;
@@ -76,10 +75,10 @@ void	mem_clear_block(t_mem_block **head)
 
 size_t	mem_find_size(void *data)
 {
-	t_mem_block	*node;
+	t_memory_block	*node;
 	size_t		res;
 
-	node = *(mem_add_new_block(NULL, 0)->head);
+	node = *(memory_add_new_block(NULL, 0)->head);
 	while (1)
 	{
 		if (node->data == data)
@@ -94,6 +93,6 @@ size_t	mem_find_size(void *data)
 
 void	ft_exit(int status)
 {
-	mem_free();
+	memory_free();
 	exit(status);
 }

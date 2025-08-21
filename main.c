@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/19 20:28:57 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 07:52:35 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static t_main_struct	*init_main_struct(char **envp)
 	t_main_struct	*main_struct;
 	t_enviroment	**env_list;
 
-	env_list = mem_malloc(sizeof(t_enviroment *));
-	main_struct = mem_malloc(sizeof(t_main_struct));
+	env_list = memory_malloc(sizeof(t_enviroment *));
+	main_struct = memory_malloc(sizeof(t_main_struct));
 	*env_list = NULL;
 	if (!env_list || !main_struct)
 		ft_exit(1);
@@ -92,7 +92,7 @@ int	main(int ac, char **av, char **envp)
 		setup_signals(INTERACTIVE_MODE);
 		org_o = dup(STDOUT_FILENO);
 		org_i = dup(STDIN_FILENO);
-		line = mem_absorb(readline("minishell "));
+		line = memory_absorb(readline("minishell "));
 		if (g_signal == SIGINT)
 		{
 			main_struct->last_status = 130;
@@ -101,6 +101,6 @@ int	main(int ac, char **av, char **envp)
 		process_line(line, main_struct);
 		restore_stdio(org_o, org_i);
 	}
-	mem_free();
+	memory_free();
 	main_struct = NULL;
 }

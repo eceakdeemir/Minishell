@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 14:26:49 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/13 17:57:31 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:38:34 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include "../libmem/libmem.h"
+#include "../libraries/minishell.h"
 
 typedef struct s_list
 {

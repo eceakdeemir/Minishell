@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:58 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 15:29:50 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strndup(const char *src, int len)
 	char	*dest;
 	int		i;
 
-	dest = mem_malloc(len + 1);
+	dest = memory_malloc(len + 1);
 	if (!dest)
 		return (NULL);
 	i = 0;

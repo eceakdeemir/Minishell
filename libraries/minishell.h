@@ -6,14 +6,13 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 00:09:21 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:35:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libmem/incs/mem_utils.h"
 # include "built_in.h"
 # include "enviroment.h"
 # include "execute.h"
@@ -29,6 +28,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "memory.h"
 
 # define INTERACTIVE_MODE 0
 # define EXECUTING_MODE 1

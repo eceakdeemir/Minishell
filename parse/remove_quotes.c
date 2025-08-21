@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:48:12 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*remove_quotes(char *word)
 	int		i;
 	int		j;
 
-	result = mem_malloc(ft_strlen(word) + 1);
+	result = memory_malloc(ft_strlen(word) + 1);
 	i = 0;
 	j = 0;
 	while (word[i])

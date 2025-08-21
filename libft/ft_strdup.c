@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:52:55 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/15 15:27:02 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strdup(const char *s1)
 
 	i = 0;
 	len = ft_strlen(s1);
-	str = mem_malloc(len + 1);
+	str = memory_malloc(len + 1);
 	if (!str)
 		return (NULL);
 	while (i < len)

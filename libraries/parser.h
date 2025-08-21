@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 00:48:07 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 07:51:05 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ int						has_it_space(char *str);
 void					helper_tokenize_char(t_main_struct *main_struct,
 							t_lexer *tmp);
 void					helper_for_query(t_main_struct *main_struct,
-							t_lexer *tmp);
-void					helper_for_space(t_lexer *export_last,
-							t_lexer **export_head, t_lexer **head,
+						t_lexer *tmp);
+void					helper_for_space(t_lexer **export_last,
+							t_lexer ***export_head, t_lexer **head,
 							t_lexer *tmp);
 
 void					control_start(t_main_struct *main_struct);

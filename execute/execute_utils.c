@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:32 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 18:51:11 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int	**create_pipes(int pipe_count)
 	i = 0;
 	if (pipe_count <= 0)
 		return (NULL);
-	pipes = mem_malloc(sizeof(int *) * pipe_count);
+	pipes = memory_malloc(sizeof(int *) * pipe_count);
 	while (i < pipe_count)
 	{
-		pipes[i] = mem_malloc(sizeof(int) * 2);
+		pipes[i] = memory_malloc(sizeof(int) * 2);
 		if (pipe(pipes[i]) == -1)
 		{
 			perror("pipe");

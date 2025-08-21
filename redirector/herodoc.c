@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 00:09:44 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:45:17 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	heredoc_child_process(char *limiter, t_main_struct *main_struct,
 	setup_signals(HEREDOC_MODE);
 	while (1)
 	{
-		line = mem_absorb(readline("> "));
+		line = memory_absorb(readline("> "));
 		if (!line)
 			break ;
 		if (!hd_no_quoted)

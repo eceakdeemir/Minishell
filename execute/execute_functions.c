@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 18:32:58 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 07:23:13 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

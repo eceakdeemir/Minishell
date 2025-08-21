@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:20 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:29:06 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	env_converter_to_execve(t_main_struct *main_struct,
 
 	i = 0;
 	temp = *(main_struct->env_struct);
-	(*temporary_execve_env) = mem_malloc(sizeof(char *)
+	(*temporary_execve_env) = memory_malloc(sizeof(char *)
 			* (ft_envsize(*(main_struct->env_struct)) + 1));
 	(*temporary_execve_env)[ft_envsize(*(main_struct->env_struct))] = NULL;
 	while (i < ft_envsize(*(main_struct->env_struct)))

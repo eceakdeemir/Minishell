@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 15:54:34 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 16:33:45 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:32 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_enviroment	*create_new_node_for_env(char *key, char *value)
 {
 	t_enviroment	*env;
 
-	env = mem_malloc(sizeof(t_enviroment));
+	env = memory_malloc(sizeof(t_enviroment));
 	if (!env)
 		return (NULL);
 	env->key = key;

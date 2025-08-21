@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 00:48:16 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 07:52:12 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *main_struct,
 			helper_tokenize_char(main_struct, tmp);
 			if (has_it_space(tmp->word))
 			{
-				helper_for_space(export_last, export_head, head, tmp);
+				helper_for_space(&export_last, &export_head, head, tmp);
 				control_link_list(tmp_prev, head, export_head);
 			}
 			control_start(main_struct);

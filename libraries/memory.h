@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libmem.h                                           :+:      :+:    :+:   */
+/*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 19:21:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:28:59 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 02:44:29 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBMEM_H
-# define LIBMEM_H
+#ifndef MEMORY_H
+# define MEMORY_H
 
 # include <stddef.h>
 
-typedef struct s_mem_block
+typedef struct s_memory_block
 {
 	void				*data;
 	size_t				size;
-	struct s_mem_block	**head;
-	struct s_mem_block	*next;
+	struct s_memory_block	**head;
+	struct s_memory_block	*next;
 
-}						t_mem_block;
+}						t_memory_block;
 
-void					*mem_malloc(size_t size);
-void					*mem_calloc(size_t type, size_t size);
-void					*mem_realloc(void *old_data, size_t new_size);
-void					mem_free(void);
-void					*mem_absorb(void *addr);
-
+void					*memory_malloc(size_t size);
+void					*memory_calloc(size_t type, size_t size);
+void					memory_free(void);
+void					*memory_absorb(void *address);
+t_memory_block			*memory_add_new_block(void *data, size_t size);
+void					memory_clear_block(t_memory_block **head);
+void					*memory_exit(void);
+void					ft_exit(int status);
 #endif // LIBMEM_H

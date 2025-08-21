@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_helper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 19:13:46 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/20 20:08:32 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 02:22:49 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_lexer	**split_and_add(t_lexer *node)
 	int		start;
 
 	i = 0;
-	tmp_head = mem_calloc(sizeof(t_lexer *), 1);
+	tmp_head = memory_calloc(sizeof(t_lexer *), 1);
 	if (!tmp_head)
 		return (NULL);
 	while (node->word[i])
