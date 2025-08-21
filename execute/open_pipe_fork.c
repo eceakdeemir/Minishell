@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/20 18:51:23 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:13:48 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	path_found_and_execute(t_parser *current, t_main_struct *main_struct)
 	char	*path;
 	char	**temporary_execve_env;
 
-	if (!current->args || !current->args[0])
+	if (!current->args || !current->args[0] || current->args[0][0] == '\0')
 		ft_exit(0);
 	path = find_path(current->args[0], main_struct);
 	if (!path)

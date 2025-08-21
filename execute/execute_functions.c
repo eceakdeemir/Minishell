@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 12:05:47 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:19:08 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
 	char	*path;
 
 	(void)parser;
+	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
+		return ;
 	path = control_path(cmd, main_struct);
 	is_acces_path(path);
 	exec_or_die(path, cmd, main_struct);
@@ -68,6 +70,17 @@ void	this_is_not_built_in(char **cmd, t_main_struct *main_struct,
 void	prepare_execute_for_one_cmd(t_parser *parser,
 		t_main_struct *main_struct)
 {
+	if (!parser->args || !parser->args[0] || parser->args[0][0] == '\0')
+	{
+		if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct)
+			== -1)
+			return ;
+		setup_signals(EXECUTING_MODE);
+		if (main_redirector(parser, 0) == -1)
+			main_struct->last_status = 1;
+		setup_signals(INTERACTIVE_MODE);
+		return ;
+	}
 	if (prepare_heredocs(parser, *(main_struct->env_struct), main_struct) == -1)
 		return ;
 	setup_signals(EXECUTING_MODE);
