@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:06 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 15:40:00 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:58:42 by igurses          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	is_valid_env_name(char *s)
 	int	i;
 
 	if (!s || s[0] == '\0')
-	{
-		print_export_error(s);
-		return (0);
-	}
+		return (1);
 	if (!ft_isalpha(s[0]) && s[0] != '_')
 	{
 		print_export_error(s);
