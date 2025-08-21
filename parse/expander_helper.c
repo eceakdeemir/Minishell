@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_helper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 19:13:46 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 02:22:49 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 10:48:59 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,21 @@ void	combine_expender(t_lexer *tmp, int start, int end, char *control_value)
 
 void	control_expender(int start, int end, t_enviroment *env, t_lexer *tmp)
 {
-	char	*is_this_expender;
-	char	*control_value;
+	char	*name;
+	char	*val;
+	int		len;
 
-	if (tmp->word[start] == '$' && ((end - 1) == start))
-		combine_expender(tmp, start, end - 1, NULL);
+	len = end - (start + 1);
+	if (len <= 0)
+		return ;
+	name = ft_substr(tmp->word, start + 1, len);
+	if (!name)
+		return ;
+	val = get_env_value(name, env);
+	if (val)
+		combine_expender(tmp, start, end, ft_strdup(val));
 	else
-	{
-		is_this_expender = ft_substr(tmp->word, start + 1, end - start - 1);
-		control_value = get_env_value(is_this_expender, env);
-		combine_expender(tmp, start, end, control_value);
-	}
+		combine_expender(tmp, start, end, ft_strdup(""));
 }
 
 t_lexer	*export_last_func(t_lexer **head)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 19:21:04 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 02:44:58 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:14:38 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	*memory_exit(void)
 {
 	const char	*error;
-	error = "memory: Out of memory\n";
 	int			i;
 
+	error = "memory: Out of memory\n";
 	i = -1;
 	while (error[++i])
 		write(STDERR_FILENO, &error[i], 1);
@@ -76,7 +76,7 @@ void	memory_clear_block(t_memory_block **head)
 size_t	mem_find_size(void *data)
 {
 	t_memory_block	*node;
-	size_t		res;
+	size_t			res;
 
 	node = *(memory_add_new_block(NULL, 0)->head);
 	while (1)

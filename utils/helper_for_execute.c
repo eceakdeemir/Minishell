@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_for_execute.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:43 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/16 17:27:08 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:30:06 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	is_acces_path(char *path)
 
 void	exec_or_die(const char *path, char **argv, t_main_struct *main_struct)
 {
-	char		**envp;
+	char	**envp;
 
 	env_converter_to_execve(main_struct, &envp);
 	execve(path, argv, envp);

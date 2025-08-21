@@ -3,38 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 21:19:12 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 07:50:57 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 12:02:56 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-void	helper_tokenize_char(t_main_struct *main_struct,
-		t_lexer *tmp)
+void	helper_tokenize_char(t_main_struct *m, t_lexer *tmp)
 {
-	int start;
+	int		start;
+	int		var_end;
+	size_t	new_len;
 
-	start = main_struct->i_for_tokenize;
-	main_struct->i_for_tokenize++;
-	while (tmp->word[main_struct->i_for_tokenize]
-		&& (ft_isalnum(tmp->word[main_struct->i_for_tokenize])
-			|| tmp->word[main_struct->i_for_tokenize] == '_'))
-		main_struct->i_for_tokenize++;
-	control_expender(start, main_struct->i_for_tokenize,
-		*(main_struct->env_struct), tmp);
+	start = m->i_for_tokenize;
+	m->i_for_tokenize++;
+	while (tmp->word[m->i_for_tokenize]
+		&& (ft_isalnum(tmp->word[m->i_for_tokenize])
+			|| tmp->word[m->i_for_tokenize] == '_'))
+		m->i_for_tokenize++;
+	var_end = m->i_for_tokenize;
+	if (var_end == start + 1)
+		return ;
+	control_expender(start, var_end, *(m->env_struct), tmp);
+	new_len = ft_strlen(tmp->word);
+	if ((size_t)m->i_for_tokenize > new_len)
+		m->i_for_tokenize = (int)new_len;
 }
 
-void	helper_for_query(t_main_struct *main_struct, t_lexer *tmp)
+void	helper_for_query(t_main_struct *m, t_lexer *tmp)
 {
-	char	*return_val;
+	int		start;
+	char	*ret;
+	size_t	len;
 
-	return_val = ft_itoa(main_struct->last_status);
-	combine_expender(tmp, main_struct->i_for_tokenize,
-		main_struct->i_for_tokenize + 2, return_val);
-	main_struct->i_for_tokenize = 0;
+	start = m->i_for_tokenize;
+	ret = ft_itoa(m->last_status);
+	if (!ret)
+		return ;
+	combine_expender(tmp, start, start + 2, ret);
+	len = 0;
+	while (tmp->word[start + len] && ft_isdigit(tmp->word[start + len]))
+		len++;
+	m->i_for_tokenize = start + (int)len;
 }
 
 void	helper_for_space(t_lexer **export_last, t_lexer ***export_head,
@@ -55,14 +68,7 @@ void	control_link_list(t_lexer *tmp_prev, t_lexer **head,
 		t_lexer **export_head)
 {
 	if (tmp_prev == NULL && *export_head)
-	{
 		*head = *export_head;
-		printf("before control_link_list\n");
-		
-	}
 	else
-	{
-			tmp_prev->next = *export_head;
-		
-	}
+		tmp_prev->next = *export_head;
 }

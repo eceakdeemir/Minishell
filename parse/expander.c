@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 07:52:12 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 12:40:13 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,34 @@ static void	control_is_quotes(t_lexer *tmp, t_main_struct *main_struct)
 		main_struct->i_for_tokenize++;
 }
 
-void	helper_for_query_if(t_lexer *tmp, t_main_struct *main_struct)
-{
-	if (tmp->word[main_struct->i_for_tokenize + 1] == '?')
-		helper_for_query(main_struct, tmp);
-}
-
-static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *main_struct,
+static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *m,
 		t_lexer **head, t_lexer *tmp_prev)
 {
 	t_lexer	*export_last;
 	t_lexer	**export_head;
 
-	while (tmp->word[main_struct->i_for_tokenize])
+	while (tmp->word[m->i_for_tokenize])
 	{
-		if (tmp->word[main_struct->i_for_tokenize] == '\'')
-			control_is_quotes(tmp, main_struct);
-		else if (tmp->word[main_struct->i_for_tokenize] == '$')
+		if (tmp->word[m->i_for_tokenize] == '\'')
+			control_is_quotes(tmp, m);
+		else if (tmp->word[m->i_for_tokenize] == '$')
 		{
-			if (tmp->word[main_struct->i_for_tokenize + 1] == 0)
+			if (!tmp->word[m->i_for_tokenize + 1])
 				return ;
-			helper_for_query_if(tmp, main_struct);
-			if (tmp->word[main_struct->i_for_tokenize + 1] == '?')
+			if (tmp->word[m->i_for_tokenize + 1] == '?')
+			{
+				helper_for_query(m, tmp);
 				continue ;
-			helper_tokenize_char(main_struct, tmp);
+			}
+			helper_tokenize_char(m, tmp);
 			if (has_it_space(tmp->word))
 			{
 				helper_for_space(&export_last, &export_head, head, tmp);
 				control_link_list(tmp_prev, head, export_head);
 			}
-			control_start(main_struct);
 		}
 		else
-			main_struct->i_for_tokenize++;
+			m->i_for_tokenize++;
 	}
 }
 

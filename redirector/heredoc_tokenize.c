@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_tokenize.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:30:01 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 00:50:02 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:13:21 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	heredoc_tokenize_expender_while(char **line, t_main_struct *main_struct,
 	return (1);
 }
 
-//dönüşü kontrol et
 void	heredoc_tokenize_expender(char **line, t_main_struct *main_struct)
 {
 	int	i;
@@ -56,10 +55,10 @@ void	heredoc_tokenize_expender(char **line, t_main_struct *main_struct)
 	int	while_return_control;
 
 	i = 0;
-	if (!line)
+	start = 0;
+	if (!line || !*line)
 		return ;
 	while_return_control = heredoc_tokenize_expender_while(line, main_struct, i,
 			start);
-	if (while_return_control == 0)
-		return ;
+	(void)while_return_control;
 }
