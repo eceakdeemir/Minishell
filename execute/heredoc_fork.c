@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:45:03 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 00:11:24 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:44:42 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	main_heredoc_child_process(char *limiter, t_main_struct *main_struct,
 {
 	char	*line;
 
-	setup_signals(HEREDOC_MODE);
+	setup_signals(HEREDOC);
 	while (1)
 	{
 		line = readline("> ");

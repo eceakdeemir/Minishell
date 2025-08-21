@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:33 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 02:35:26 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:44:34 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 # include <unistd.h>
 # include "memory.h"
 
-# define INTERACTIVE_MODE 0
-# define EXECUTING_MODE 1
-# define HEREDOC_MODE 2
+# define INTERACTIVE 0
+# define EXECUTING 1
+# define HEREDOC 2
 
 extern sig_atomic_t	g_signal;
 
@@ -48,14 +48,14 @@ int					prepare_heredocs(t_parser *parser, t_enviroment *env,
 						t_main_struct *main_struct);
 
 void				setup_signals(int context);
-void				setup_signals_interactive(void);
-void				setup_signals_executing(void);
-void				setup_signals_heredoc(void);
+void				signals_interactive(void);
+void				signals_executing(void);
+void				signals_heredoc(void);
 void				reset_signals(void);
-void				handle_sigint_interactive(int signo);
+void				sigint_interactive(int signo);
 void				handle_sigint_executing(int signo);
 void				handle_sigquit_executing(int signo);
-void				handle_sigint_heredoc(int signo);
+void				sigint_heredoc(int signo);
 void				set_sig(int sig, void (*h)(int));
 void				enter_heredoc_parent_mode(void);
 void				restore_interactive_mode(void);

@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:37:16 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 08:47:10 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:44:26 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	heredoc_child_process(char *limiter, t_main_struct *main_struct,
 {
 	char	*line;
 
-	setup_signals(HEREDOC_MODE);
+	setup_signals(HEREDOC);
 	while (1)
 	{
 		line = memory_absorb(readline("> "));
@@ -99,7 +99,7 @@ int	prepare_heredocs(t_parser *parser, t_enviroment *env,
 			signal(SIGQUIT, SIG_IGN);
 			redir->herodoc_fd = create_heredoc_file(redir->file, env,
 					main_struct, redir->hd_no_expand);
-			setup_signals(INTERACTIVE_MODE);
+			setup_signals(INTERACTIVE);
 			if (redir->herodoc_fd == -1 || g_signal == SIGINT)
 				return (heredoc_fail_clear(parser, main_struct));
 		}

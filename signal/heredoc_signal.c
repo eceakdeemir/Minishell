@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_signal.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:36:11 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/20 18:50:51 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:40:16 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void	enter_heredoc_parent_mode(void)
 
 void	restore_interactive_mode(void)
 {
-	set_sig(SIGINT, handle_sigint_interactive);
+	set_sig(SIGINT, sigint_interactive);
 	set_sig(SIGQUIT, SIG_IGN);
 }

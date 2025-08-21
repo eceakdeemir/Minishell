@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:39:27 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 07:52:35 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:43:18 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **envp)
 	main_struct = init_main_struct(envp);
 	while (1)
 	{
-		setup_signals(INTERACTIVE_MODE);
+		setup_signals(INTERACTIVE);
 		org_o = dup(STDOUT_FILENO);
 		org_i = dup(STDIN_FILENO);
 		line = memory_absorb(readline("minishell "));
