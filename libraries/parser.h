@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 11:14:58 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/22 09:08:08 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ typedef struct s_lexer
 	enum s_token_enum	token_enum;
 }						t_lexer;
 
+typedef struct s_helper_lexer
+{
+	t_lexer				*export_last;
+	t_lexer				**export_head;
+}						t_helper_lexer;
 typedef enum s_built_in_type
 {
 	ECHO,
@@ -134,8 +139,7 @@ void					helper_tokenize_char(t_main_struct *main_struct,
 void					helper_for_query(t_main_struct *main_struct,
 							t_lexer *tmp);
 void					helper_for_space(t_lexer **export_last,
-							t_lexer ***export_head, t_lexer **head,
-							t_lexer *tmp);
+							t_lexer ***export_head, t_lexer *tmp);
 
 void					control_start(t_main_struct *main_struct);
 void					control_link_list(t_lexer *tmp_prev, t_lexer **head,

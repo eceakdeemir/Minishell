@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:36:50 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 12:40:13 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/22 09:04:17 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static void	control_is_quotes(t_lexer *tmp, t_main_struct *main_struct)
 static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *m,
 		t_lexer **head, t_lexer *tmp_prev)
 {
-	t_lexer	*export_last;
-	t_lexer	**export_head;
+	t_helper_lexer	helper;
 
 	while (tmp->word[m->i_for_tokenize])
 	{
@@ -44,8 +43,8 @@ static void	while_tokenize_expander(t_lexer *tmp, t_main_struct *m,
 			helper_tokenize_char(m, tmp);
 			if (has_it_space(tmp->word))
 			{
-				helper_for_space(&export_last, &export_head, head, tmp);
-				control_link_list(tmp_prev, head, export_head);
+				helper_for_space(&helper.export_last, &helper.export_head, tmp);
+				control_link_list(tmp_prev, head, helper.export_head);
 			}
 		}
 		else

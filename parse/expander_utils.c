@@ -6,7 +6,7 @@
 /*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 21:19:12 by igurses           #+#    #+#             */
-/*   Updated: 2025/08/21 12:02:56 by ibrahim          ###   ########.fr       */
+/*   Updated: 2025/08/22 09:04:58 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	helper_for_query(t_main_struct *m, t_lexer *tmp)
 }
 
 void	helper_for_space(t_lexer **export_last, t_lexer ***export_head,
-		t_lexer **head, t_lexer *tmp)
+		t_lexer *tmp)
 {
 	*export_head = split_and_add(tmp);
 	*export_last = export_last_func(*export_head);
