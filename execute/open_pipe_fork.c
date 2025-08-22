@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_pipe_fork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igurses <igurses@student.42istanbul.com    +#+  +:+       +#+        */
+/*   By: ibrahim <ibrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:37 by ecakdemi          #+#    #+#             */
-/*   Updated: 2025/08/21 18:13:50 by igurses          ###   ########.fr       */
+/*   Updated: 2025/08/22 11:35:36 by ibrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	handle_child_process(t_parser *current, int pipe_count,
 	if (!current->args || !current->args[0])
 	{
 		if (pipe_count > 0)
-			ft_exit(2);
+			ft_exit(0);
 		ft_exit(0);
 	}
 	if (current->built_type >= 0 && current->built_type <= 6)
